@@ -1,0 +1,46 @@
+.card {
+  min-width: 0;
+  padding: 22px;
+  border-radius: var(--a-radius);
+  background: var(--a-surface);
+}
+
+.header {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 26px;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.action {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.action:hover {
+  color: var(--a-red);
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 18px 16px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

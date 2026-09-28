@@ -1,0 +1,95 @@
+.search {
+  width: 260px;
+}
+
+.bell {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--a-border);
+  border-radius: 50%;
+  background: var(--a-surface);
+  transition: border-color 0.15s;
+}
+
+.bell:hover {
+  border-color: var(--a-ink);
+}
+
+.bellDot {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--a-surface);
+  border-radius: 50%;
+  background: var(--a-red);
+}
+
+.stats {
+  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 356px;
+  align-items: start;
+  gap: 16px;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Below the design width the orders table needs the full row; the side cards move under it. */
+@media (max-width: 1439px) {
+  .search {
+    width: 220px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (max-width: 1279px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .search {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .add {
+    flex: 1;
+  }
+
+  .stats {
+    margin-bottom: 16px;
+    gap: 10px;
+  }
+
+  .side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

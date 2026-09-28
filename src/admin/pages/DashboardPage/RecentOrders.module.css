@@ -1,0 +1,136 @@
+/* The table runs to the card's right edge, as in the design. */
+.scroller {
+  margin-right: -22px;
+}
+
+.table td {
+  white-space: nowrap;
+}
+
+/* The delivery column takes the rest of the row; a long district is cut with an ellipsis. */
+.delivery {
+  width: 100%;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.number {
+  font-weight: 600;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: normal;
+}
+
+.productName {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.more {
+  color: var(--a-muted);
+}
+
+/* Wide cards (full-width row, or very wide screens): give product names room. */
+@media (min-width: 1280px) and (max-width: 1439px), (min-width: 1600px) {
+  .productName {
+    min-width: 170px;
+  }
+}
+
+/* Tablets and small laptops: the payment method is dropped (it is on the order page). */
+@media (max-width: 1279px) {
+  .payment {
+    display: none;
+  }
+}
+
+/* Phones: each order becomes a two-line row — product + status, then number · size · district. */
+@media (max-width: 767px) {
+  .scroller {
+    margin-right: 0;
+  }
+
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    padding: 12px 0;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'product product product status'
+      'number size delivery delivery';
+    align-items: center;
+    gap: 8px 12px;
+    border-bottom: 1px solid var(--a-line);
+  }
+
+  .table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .table tbody td {
+    padding: 0;
+    border: 0;
+  }
+
+  /* Lines up under the product name (thumb 44px + 12px gap). */
+  .table .number {
+    grid-area: number;
+    padding-left: 56px;
+    font-size: 13px;
+  }
+
+  .productCell {
+    grid-area: product;
+    min-width: 0;
+  }
+
+  .productName {
+    -webkit-line-clamp: 2;
+  }
+
+  .size {
+    grid-area: size;
+    font-size: 15px;
+  }
+
+  .status {
+    grid-area: status;
+  }
+
+  .delivery {
+    grid-area: delivery;
+    width: auto;
+    max-width: none;
+    font-size: 13px;
+  }
+}
+
+/* Small phones: the status moves under the order details. */
+@media (max-width: 374px) {
+  .table tr {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas:
+      'product product product'
+      'number size delivery'
+      'status status status';
+  }
+
+  .table .status {
+    padding-left: 56px;
+  }
+}

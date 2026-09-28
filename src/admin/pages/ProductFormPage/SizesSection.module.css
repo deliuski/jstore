@@ -1,0 +1,94 @@
+.total {
+  font-size: 13px;
+  color: var(--a-muted);
+}
+
+.totalValue {
+  margin: 0 2px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--a-ink);
+}
+
+.presets {
+  margin-bottom: 16px;
+}
+
+.hint {
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--a-muted);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px 24px;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.label {
+  width: 84px;
+  flex-shrink: 0;
+}
+
+.stock {
+  min-width: 0;
+  flex: 1;
+}
+
+/* A narrower stepper than the kit default, so a row fits a phone. */
+.stock button {
+  width: 38px;
+}
+
+.stock input {
+  padding: 0 6px;
+}
+
+.remove {
+  width: 36px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--a-radius-sm);
+  color: var(--a-muted);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.remove:hover {
+  background: #fbe4e1;
+  color: var(--a-red-text);
+}
+
+.oneSize {
+  max-width: 260px;
+}
+
+.addRow {
+  margin-top: 16px;
+}
+
+@media (max-width: 767px) {
+  .rows {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .label {
+    width: 72px;
+  }
+}

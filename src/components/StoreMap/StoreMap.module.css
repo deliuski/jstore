@@ -1,0 +1,41 @@
+.map {
+  position: relative;
+  height: 420px;
+  border: 1px solid var(--c-line);
+  background: var(--c-hero);
+  /* Keep Leaflet's panes under the site's own overlays (header menu, drawers). */
+  isolation: isolate;
+}
+
+.leaflet {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+}
+
+.pinWrap {
+  background: none;
+  border: 0;
+}
+
+.pin {
+  position: relative;
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--c-red);
+  transform: rotate(-45deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.pin::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 11px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--c-white);
+}

@@ -1,0 +1,56 @@
+.pill {
+  height: 28px;
+  padding: 0 11px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.blue {
+  background: #e7eefa;
+  color: #1f4e9c;
+}
+
+.green {
+  background: #e3f1e8;
+  color: #22683f;
+}
+
+.red {
+  background: #fbe4e1;
+  color: #a1261d;
+}
+
+.orange {
+  background: #fbebd6;
+  color: #7e4410;
+}
+
+.grey {
+  background: #eceae6;
+  color: #57524b;
+}
+
+.dark {
+  background: #d9d5cf;
+  color: #2b2824;
+}
+
+.sand {
+  background: var(--a-sand);
+  color: var(--a-sand-ink);
+}

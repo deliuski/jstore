@@ -1,0 +1,89 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admins are users with an admins/{uid} document (created in the Firebase console).
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function counterPath() {
+      return /databases/$(database)/documents/counters/orders;
+    }
+
+    // The next order number: one past the counter, or 1001 for the very first order.
+    function isNextOrderNumber(number) {
+      return exists(counterPath())
+        ? number == get(counterPath()).data.last + 1
+        : number == 1001;
+    }
+
+    match /admins/{uid} {
+      // A signed-in user may check whether they are an admin; nobody writes from the app.
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /products/{productId} {
+      // The storefront only sees published products (queries must filter by status).
+      allow read: if resource.data.status in ['active', 'soon'] || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /counters/orders {
+      allow read: if true;
+      // A customer may only move the counter to the order they are creating in the same write.
+      allow create, update: if isAdmin() || (
+        request.resource.data.keys().hasOnly(['last'])
+        && isNextOrderNumber(request.resource.data.last)
+        && existsAfter(/databases/$(database)/documents/orders/$(string(request.resource.data.last)))
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      // Orders hold names and phone numbers: only admins read them.
+      allow read, update, delete: if isAdmin();
+
+      allow create: if isAdmin() || (
+        isValidNewOrder(request.resource.data)
+        && orderId == string(request.resource.data.number)
+        && isNextOrderNumber(request.resource.data.number)
+        && getAfter(counterPath()).data.last == request.resource.data.number
+      );
+    }
+
+    function isValidNewOrder(order) {
+      return order.keys().hasOnly(['number', 'items', 'subtotal', 'customer', 'delivery', 'payment',
+                                   'status', 'preorder', 'deliverBy', 'stockDeducted', 'createdAt', 'updatedAt'])
+        && order.number is int
+        && order.items is list && order.items.size() > 0 && order.items.size() <= 20
+        && (order.subtotal == null || order.subtotal is number)
+        && order.customer.keys().hasOnly(['name', 'phone'])
+        && order.customer.name is string && order.customer.name.size() > 0 && order.customer.name.size() <= 80
+        && order.customer.phone is string && order.customer.phone.matches('^[0-9 -]{8,12}$')
+        && order.delivery.keys().hasOnly(['method', 'district', 'address', 'note'])
+        && order.delivery.method in ['delivery', 'pickup']
+        && order.delivery.address is string && order.delivery.address.size() <= 300
+        && order.delivery.note is string && order.delivery.note.size() <= 500
+        && order.payment.keys().hasOnly(['method', 'status', 'provider', 'reference'])
+        && order.payment.method in ['bonum']
+        && order.payment.status == 'pending'
+        && order.payment.provider == null
+        && order.payment.reference == null
+        && order.status == 'new'
+        && order.preorder is bool
+        && order.deliverBy == null
+        && order.stockDeducted == false
+        && order.createdAt == request.time
+        && order.updatedAt == request.time;
+    }
+  }
+}

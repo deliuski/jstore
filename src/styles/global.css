@@ -1,0 +1,107 @@
+@import './fonts.css';
+
+/*
+ * Design tokens — taken 1:1 from the "Opium" design.
+ *
+ * Breakpoints used across the CSS modules:
+ *   > 1279px   desktop — the design at 1440px, pixel for pixel
+ *   <= 1279px  laptop  — tighter gutters, 4-column product grid
+ *   <= 1023px  tablet  — hamburger header, 3-column grid, stacked product page
+ *   <= 767px   mobile  — the mobile design at 390px
+ */
+:root {
+  --c-ink: #1a1a1a;
+  --c-muted: #6b6b6b;
+  --c-dark: #222222;
+  --c-white: #ffffff;
+  --c-red: #e4123b;
+  --c-red-soft: #ff5a74;
+  --c-line: #e6e6e6;
+
+  --c-hero: #e8e8e6;
+  --c-hero-ghost: #d3d3d0;
+  --c-dot-idle: #b5b5b2;
+
+  --c-placeholder: #f5f5f4;
+  --c-placeholder-mark: #cfcfcb;
+  --c-badge-out: #767676;
+
+  --c-size-off-border: #4e4e4e;
+  --c-size-off-text: #7c7c7c;
+  --c-size-disabled-bg: #f4f4f3;
+  --c-size-disabled-text: #a9a9a6;
+
+  --c-footer-text: #d9d9d9;
+  --c-footer-line: #5a5a5a;
+  --c-logo-sub: #a6a6a6;
+
+  --font-body: 'Onest', system-ui, sans-serif;
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+
+  --page-max: 1440px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--c-white);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font-family: var(--font-body);
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+img,
+svg {
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-red);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

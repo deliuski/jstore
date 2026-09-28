@@ -1,0 +1,233 @@
+.numberCell,
+.size,
+.total,
+.payment,
+.status,
+.delivery {
+  white-space: nowrap;
+}
+
+.number {
+  font-weight: 600;
+}
+
+.date {
+  margin-top: 3px;
+  display: block;
+  font-size: 12.5px;
+  color: var(--a-muted);
+}
+
+.preorder {
+  width: fit-content;
+  margin-top: 6px;
+  padding: 3px 8px;
+  display: block;
+  border-radius: 999px;
+  background: var(--a-sand);
+  color: var(--a-sand-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.productName {
+  min-width: 150px;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.more,
+.meta {
+  color: var(--a-muted);
+}
+
+.meta {
+  font-size: 12.5px;
+}
+
+/* The size has its own column on wide screens. */
+.metaSize {
+  display: none;
+}
+
+.customerName {
+  max-width: 200px;
+  display: block;
+}
+
+.phone {
+  margin-top: 3px;
+  display: block;
+  font-size: 12.5px;
+  white-space: nowrap;
+  color: var(--a-muted);
+}
+
+.total {
+  font-weight: 600;
+}
+
+@media (max-width: 1439px) {
+  .payment {
+    display: none;
+  }
+}
+
+/* Laptops and tablets: size moves under the product name, delivery is left to the order page. */
+@media (max-width: 1279px) {
+  .scroller .table th,
+  .scroller .table td {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .size,
+  .delivery {
+    display: none;
+  }
+
+  .metaSize {
+    display: inline;
+  }
+
+  .productName {
+    min-width: 110px;
+  }
+
+  .customerName {
+    max-width: 150px;
+  }
+}
+
+/* Phones: every order becomes its own card. */
+@media (max-width: 767px) {
+  .table {
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .scroller .row {
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'number total'
+      'product product'
+      'customer customer'
+      'status delivery';
+    align-items: center;
+    gap: 12px;
+    border-radius: var(--a-radius);
+    background: var(--a-surface);
+  }
+
+  .scroller .row td {
+    padding: 0;
+    border: 0;
+  }
+
+  .scroller .row:hover td {
+    background: none;
+  }
+
+  .scroller .row:hover {
+    box-shadow: 0 0 0 1px var(--a-border);
+  }
+
+  .numberCell {
+    grid-area: number;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+  }
+
+  .date,
+  .preorder {
+    margin-top: 0;
+  }
+
+  .productCell {
+    grid-area: product;
+  }
+
+  .productName {
+    min-width: 0;
+  }
+
+  .customer {
+    grid-area: customer;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 10px;
+  }
+
+  .customerName {
+    max-width: none;
+    font-weight: 500;
+  }
+
+  .phone {
+    margin-top: 0;
+    font-size: 13px;
+  }
+
+  .total {
+    grid-area: total;
+  }
+
+  .status {
+    grid-area: status;
+  }
+
+  .scroller .delivery {
+    grid-area: delivery;
+    min-width: 0;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+  }
+}
+
+/* Small phones: the status pill gets its own line. */
+@media (max-width: 374px) {
+  .scroller .row {
+    grid-template-areas:
+      'number total'
+      'product product'
+      'customer customer'
+      'delivery delivery'
+      'status status';
+  }
+
+  .scroller .delivery {
+    text-align: left;
+  }
+}

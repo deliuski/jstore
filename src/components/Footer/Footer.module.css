@@ -1,0 +1,240 @@
+.footer {
+  background: var(--c-dark);
+  color: var(--c-white);
+}
+
+.inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 96px 88px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 48px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brandInfo {
+  display: contents;
+}
+
+.storeName {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--c-footer-text);
+}
+
+.contactTitle {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.groupTitle {
+  margin-bottom: 26px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.groupLink {
+  font-size: 17px;
+  color: var(--c-footer-text);
+  transition: color 0.15s;
+}
+
+.groupLink:hover {
+  color: var(--c-white);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--c-footer-line);
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payments {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment {
+  padding: 6px 14px;
+  border: 1.5px solid var(--c-white);
+  border-radius: 16px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+}
+
+.social {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.social:hover {
+  color: var(--c-red-soft);
+}
+
+.socialIcon {
+  width: 36px;
+  height: 36px;
+}
+
+.credit {
+  font-size: 16px;
+  color: var(--c-footer-text);
+}
+
+@media (max-width: 1279px) {
+  .inner {
+    padding: 80px 40px 48px;
+  }
+
+  .columns {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .inner {
+    padding: 64px 32px 40px;
+    gap: 48px;
+  }
+
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .inner {
+    padding: 40px 22px 34px;
+    gap: 24px;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+
+  .columns {
+    gap: 24px 22px;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+    gap: 24px;
+  }
+
+  .brandInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .storeName {
+    margin-top: 0;
+    font-size: 20px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .group {
+    gap: 10px;
+  }
+
+  .groupTitle {
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  .groupLink {
+    font-size: 14px;
+  }
+
+  .bottom {
+    gap: 24px;
+  }
+
+  .bottomRow {
+    flex-wrap: wrap;
+    row-gap: 24px;
+  }
+
+  .payments {
+    gap: 6px;
+  }
+
+  .payment {
+    padding: 4px 10px;
+    border-radius: 13px;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  .socials {
+    gap: 0;
+  }
+
+  .socialIcon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .credit {
+    flex-basis: 100%;
+    font-size: 13px;
+  }
+}

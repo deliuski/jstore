@@ -1,0 +1,129 @@
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stage {
+  position: relative;
+  height: 642px;
+  border: 1px solid var(--c-line);
+  background: var(--c-white);
+}
+
+.stageImage {
+  position: absolute;
+  left: 60px;
+  top: 110px;
+  width: calc(100% - 120px);
+  height: 420px;
+  object-fit: contain;
+}
+
+/* Two classes so it wins over the responsive .stageImage offsets. */
+.stageImage.stageImageCover {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stagePlaceholder {
+  position: absolute;
+  inset: 0;
+  --mark-size: 160px;
+}
+
+.badge {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.thumb {
+  height: 150px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--c-line);
+  background: var(--c-white);
+  font-size: 13px;
+  color: var(--c-muted);
+}
+
+.thumbActive {
+  border: 2px solid var(--c-ink);
+}
+
+.thumbCover {
+  padding: 0;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumbImageCover {
+  object-fit: cover;
+}
+
+@media (max-width: 1023px) {
+  .stage {
+    height: 520px;
+  }
+
+  .stageImage {
+    top: 70px;
+    height: 380px;
+  }
+}
+
+@media (max-width: 767px) {
+  .gallery {
+    gap: 8px;
+  }
+
+  .stage {
+    height: 340px;
+  }
+
+  .stageImage {
+    left: 16px;
+    top: 40px;
+    width: calc(100% - 32px);
+    height: 260px;
+  }
+
+  .stagePlaceholder {
+    --mark-size: 96px;
+  }
+
+  .badge {
+    left: 12px;
+    top: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .thumbs {
+    gap: 8px;
+  }
+
+  .thumb {
+    height: 80px;
+    padding: 8px;
+    font-size: 11px;
+  }
+}

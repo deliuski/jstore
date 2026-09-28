@@ -1,0 +1,90 @@
+.shell {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+  padding: 40px var(--a-gutter) 30px;
+}
+
+.topBar {
+  display: none;
+}
+
+.backdrop {
+  display: none;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    display: block;
+  }
+
+  .topBar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: 60px;
+    padding: 0 var(--a-gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--a-dark);
+  }
+
+  .menuButton {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--a-on-dark);
+  }
+
+  .menuDot {
+    position: absolute;
+    top: 9px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--a-red);
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    display: block;
+    background: rgb(18 17 16 / 55%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .backdropVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main {
+    padding-top: 28px;
+    padding-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding-top: 22px;
+  }
+}

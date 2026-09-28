@@ -1,0 +1,30 @@
+import type { ComponentType, SVGProps } from 'react'
+import {
+  BoxIcon,
+  GridIcon,
+  HourglassIcon,
+  LayersIcon,
+  MessageIcon,
+  ReceiptIcon,
+  SettingsIcon,
+} from '../components/icons'
+
+export const ADMIN_HOME_PATH = '/admin'
+export const ADMIN_LOGIN_PATH = '/admin/login'
+
+type NavIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>
+
+export type AdminNavItem =
+  | { label: string; icon: NavIcon; to: string; showNewOrders?: boolean }
+  /** External link to the store's Messenger inbox (URL from the store settings). */
+  | { label: string; icon: NavIcon; messenger: true }
+
+export const ADMIN_NAV: AdminNavItem[] = [
+  { label: 'Самбар', to: ADMIN_HOME_PATH, icon: GridIcon },
+  { label: 'Захиалга', to: '/admin/orders', icon: ReceiptIcon, showNewOrders: true },
+  { label: 'Бараа', to: '/admin/products', icon: BoxIcon },
+  { label: 'Нөөц · размер', to: '/admin/inventory', icon: LayersIcon },
+  { label: 'Урьдчилсан захиалга', to: '/admin/preorders', icon: HourglassIcon },
+  { label: 'Messenger', icon: MessageIcon, messenger: true },
+  { label: 'Тохиргоо', to: '/admin/settings', icon: SettingsIcon },
+]

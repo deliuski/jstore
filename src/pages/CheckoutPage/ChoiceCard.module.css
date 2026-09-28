@@ -1,0 +1,93 @@
+.card {
+  position: relative;
+  padding: 18px 18px 18px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1.5px solid var(--c-ink);
+  background: var(--c-white);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.card:hover {
+  background: var(--c-size-disabled-bg);
+}
+
+.card.checked {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+.card:has(.radio:focus-visible) {
+  outline: 2px solid var(--c-red);
+  outline-offset: 2px;
+}
+
+/* Invisible but still focusable and announced; the card draws the state. */
+.radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dot {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.checked .dot::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c-red);
+}
+
+.body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+.checked .text {
+  color: var(--c-footer-text);
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+}

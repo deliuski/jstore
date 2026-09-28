@@ -1,0 +1,31 @@
+.list {
+  margin: 0;
+}
+
+.row {
+  padding: 11px 0;
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 4px 16px;
+  border-top: 1px solid var(--a-line);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.label {
+  color: var(--a-muted);
+}
+
+.value {
+  margin: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 4px 12px;
+  }
+}

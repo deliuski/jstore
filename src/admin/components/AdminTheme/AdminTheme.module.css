@@ -1,0 +1,54 @@
+/*
+ * Admin design tokens — sampled from the "Эзэмшигчийн самбар" design.
+ * Scoped to the admin root, so they never leak into the storefront.
+ */
+.theme {
+  --a-bg: #f4f1ec;
+  --a-surface: #ffffff;
+  --a-ink: #161412;
+  --a-muted: #6b655d;
+  --a-subtle: #a59e94;
+  --a-line: #efebe6;
+  --a-border: #e8e3dc;
+  --a-sand: #e9e2d7;
+  --a-sand-ink: #5e584f;
+  --a-sand-mark: #8a7f70;
+
+  --a-red: #d63a2f;
+  --a-red-hover: #bf3027;
+  --a-red-text: #b22a21;
+  --a-red-glow: #ff5446;
+
+  --a-dark: #121110;
+  --a-dark-raised: #25221f;
+  --a-dark-card: #1b1917;
+  --a-dark-line: #2a2723;
+  --a-on-dark: #f4f1ec;
+
+  --a-radius: 8px;
+  --a-radius-sm: 6px;
+  --a-gutter: 36px;
+
+  min-height: 100vh;
+  background: var(--a-bg);
+  color: var(--a-ink);
+  font-family: var(--font-body);
+}
+
+.theme input,
+.theme select,
+.theme textarea {
+  font-family: var(--font-body);
+}
+
+@media (max-width: 1279px) {
+  .theme {
+    --a-gutter: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .theme {
+    --a-gutter: 16px;
+  }
+}

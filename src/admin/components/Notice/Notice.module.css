@@ -1,0 +1,26 @@
+.notice {
+  padding: 12px 14px;
+  border-radius: var(--a-radius-sm);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.info {
+  background: #e7eefa;
+  color: #1f4e9c;
+}
+
+.success {
+  background: #e3f1e8;
+  color: #22683f;
+}
+
+.error {
+  background: #fbe4e1;
+  color: #a1261d;
+}
+
+.warning {
+  background: #fbebd6;
+  color: #7e4410;
+}

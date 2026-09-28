@@ -1,0 +1,270 @@
+.hero {
+  position: relative;
+  height: 740px;
+  overflow: hidden;
+  background: var(--c-hero);
+  touch-action: pan-y;
+}
+
+.stage {
+  position: relative;
+  max-width: var(--page-max);
+  height: 100%;
+  margin: 0 auto;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  animation: fade-in 0.45s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.ghost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 340px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 290px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--c-hero-ghost);
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.kicker {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--c-muted);
+}
+
+.title {
+  max-width: 1000px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 78px;
+  line-height: 0.95;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+
+.cta {
+  height: 58px;
+  padding: 0 58px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--c-red);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  transition: background-color 0.15s;
+}
+
+.cta:hover {
+  background: #c90f33;
+}
+
+.shoe {
+  position: absolute;
+  left: 170px;
+  top: 390px;
+  width: 520px;
+  height: 300px;
+  object-fit: contain;
+  transform: rotate(-9deg);
+  filter: drop-shadow(0 26px 22px rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+  user-select: none;
+}
+
+.shoeMirrored {
+  left: auto;
+  right: 170px;
+  transform: scaleX(-1) rotate(-9deg);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-ink);
+  transform: translateY(-50%);
+}
+
+.arrowPrev {
+  left: 32px;
+}
+
+.arrowNext {
+  right: 32px;
+}
+
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 26px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.dotActive {
+  width: 50px;
+}
+
+.dotBar {
+  width: 100%;
+  height: 4px;
+  background: var(--c-dot-idle);
+}
+
+.dotActive .dotBar {
+  background: var(--c-red);
+}
+
+@media (max-width: 1279px) {
+  .shoe {
+    left: 6%;
+    width: 40%;
+    height: auto;
+    aspect-ratio: 520 / 300;
+  }
+
+  .shoeMirrored {
+    left: auto;
+    right: 6%;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero {
+    height: 620px;
+  }
+
+  .content {
+    top: 72px;
+    padding: 0 88px;
+  }
+
+  .title {
+    font-size: 60px;
+  }
+
+  .ghost {
+    top: 330px;
+    font-size: 200px;
+  }
+
+  .shoe {
+    top: 350px;
+    left: 3%;
+    width: 46%;
+  }
+
+  .shoeMirrored {
+    left: auto;
+    right: 3%;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    height: 470px;
+  }
+
+  .ghost {
+    top: 250px;
+    font-size: 120px;
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .content {
+    left: 20px;
+    right: 20px;
+    top: 44px;
+    padding: 0;
+    gap: 16px;
+  }
+
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+  }
+
+  .title {
+    font-size: 42px;
+    line-height: 0.98;
+  }
+
+  .cta {
+    height: 52px;
+    padding: 0 40px;
+    font-size: 18px;
+  }
+
+  .shoe {
+    left: calc(50% - 165px);
+    top: 262px;
+    width: 330px;
+    height: 180px;
+    aspect-ratio: auto;
+    filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.2));
+  }
+
+  .shoeMirrored,
+  .arrow {
+    display: none;
+  }
+
+  /* Bars sit 8px above the bottom edge; the 44px tap targets hang below it. */
+  .dots {
+    bottom: -12px;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 20px;
+  }
+
+  .dotActive {
+    width: 40px;
+  }
+}

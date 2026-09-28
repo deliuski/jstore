@@ -1,0 +1,13 @@
+/* The store form, with the account card in a side column on wide screens; narrower screens stack. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 356px;
+  align-items: start;
+  gap: 16px;
+}
+
+@media (max-width: 1279px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

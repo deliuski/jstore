@@ -1,0 +1,95 @@
+/* Same look as the dashboard's "Ирэх ачаа" card. */
+.card {
+  min-width: 0;
+  padding: 22px;
+  border-radius: var(--a-radius);
+  background: var(--a-dark);
+  color: var(--a-on-dark);
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--a-subtle);
+}
+
+.countRow {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 44px;
+  white-space: nowrap;
+  color: var(--a-red-glow);
+  text-shadow: 0 0 18px rgb(255 84 70 / 45%);
+}
+
+.unit {
+  font-size: 13px;
+  color: var(--a-subtle);
+}
+
+.unscheduled {
+  margin-top: 15px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 44px;
+  text-transform: uppercase;
+  color: var(--a-subtle);
+}
+
+.arrival {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--a-subtle);
+}
+
+.capacity {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--a-dark-line);
+}
+
+.capacityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--a-subtle);
+}
+
+.booked {
+  font-weight: 700;
+  color: var(--a-on-dark);
+}
+
+.bar {
+  margin-top: 7px;
+}
+
+.free {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 16px;
+  color: var(--a-subtle);
+}
+
+.full {
+  font-weight: 600;
+  color: var(--a-red-glow);
+}

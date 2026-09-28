@@ -1,0 +1,43 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--a-on-dark);
+}
+
+.onLight {
+  color: var(--a-ink);
+}
+
+.mark {
+  width: 29px;
+  height: 29px;
+  flex-shrink: 0;
+  color: var(--a-red);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0.08em;
+}
+
+.caption {
+  margin-top: 3px;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 10px;
+  letter-spacing: 0.2em;
+  color: var(--a-subtle);
+}
+
+.onLight .caption {
+  color: var(--a-muted);
+}

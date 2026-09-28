@@ -1,0 +1,205 @@
+.table td {
+  white-space: nowrap;
+}
+
+/* The product column takes the rest of the row. */
+.productCell {
+  width: 100%;
+  min-width: 240px;
+}
+
+.table .productCell {
+  white-space: normal;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: 600;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.meta {
+  font-size: 12.5px;
+  line-height: 16px;
+  color: var(--a-muted);
+  overflow-wrap: anywhere;
+}
+
+/* The category moves under the name once its column is dropped. */
+.metaCategory {
+  display: none;
+}
+
+.priceValue {
+  font-weight: 600;
+}
+
+.sale {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.salePill {
+  height: 22px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+.oldPrice {
+  font-size: 12.5px;
+  color: var(--a-muted);
+}
+
+.stockLabel {
+  display: none;
+}
+
+.low {
+  color: var(--a-red-text);
+}
+
+.soldOut {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--a-subtle);
+}
+
+.featured {
+  text-align: center;
+}
+
+.star {
+  display: inline-flex;
+  vertical-align: middle;
+  color: var(--a-red);
+}
+
+/* Above the row link overlay, so they stay clickable. */
+.iconButton {
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  color: var(--a-muted);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.iconButton:hover {
+  background: var(--a-bg);
+  color: var(--a-ink);
+}
+
+.delete:hover {
+  background: #fbe4e1;
+  color: var(--a-red-text);
+}
+
+@media (max-width: 1279px) {
+  .category {
+    display: none;
+  }
+
+  .metaCategory {
+    display: inline;
+  }
+}
+
+/* Phones: each product becomes a card — name, then price · stock, then status · actions. */
+@media (max-width: 767px) {
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .row {
+    padding: 14px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'product featured'
+      'price stock'
+      'status actions';
+    align-items: center;
+    gap: 10px 12px;
+    border-bottom: 1px solid var(--a-line);
+  }
+
+  .row:last-child {
+    border-bottom: 0;
+  }
+
+  .table tbody td {
+    padding: 0;
+    border: 0;
+  }
+
+  .productCell {
+    grid-area: product;
+    width: auto;
+    min-width: 0;
+  }
+
+  .price {
+    grid-area: price;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+  }
+
+  .sale {
+    margin-top: 0;
+  }
+
+  .stock {
+    grid-area: stock;
+  }
+
+  .stockLabel {
+    display: inline;
+    font-size: 13px;
+    color: var(--a-muted);
+  }
+
+  .status {
+    grid-area: status;
+  }
+
+  .featured {
+    grid-area: featured;
+    align-self: start;
+  }
+
+  .actions {
+    grid-area: actions;
+    margin-right: -8px;
+  }
+}

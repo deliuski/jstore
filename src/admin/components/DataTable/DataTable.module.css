@@ -1,0 +1,82 @@
+/*
+ * Admin table styles. Usage:
+ *   <div className={t.scroller}><table className={t.table}>…</table></div>
+ * Plain <th>/<td> are styled; add the helper classes to cells as needed.
+ */
+.scroller {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--a-line);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--a-muted);
+}
+
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--a-line);
+  line-height: 17.5px;
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A row that opens something: put `rowLink` on the row's main <a>; the whole row becomes clickable. */
+.clickable {
+  position: relative;
+}
+
+.clickable:hover td {
+  background: #faf8f5;
+}
+
+.rowLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--a-muted);
+}
+
+/* Oswald numbers — sizes, quantities. */
+.num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.right {
+  text-align: right;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Shrinks a column to its content. */
+.fit {
+  width: 1%;
+  white-space: nowrap;
+}

@@ -1,0 +1,37 @@
+.pager {
+  margin-top: 16px;
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--a-line);
+}
+
+.range {
+  font-size: 13px;
+  color: var(--a-muted);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.current {
+  min-width: 52px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Phones: the list sits on the page background, so the divider goes. */
+@media (max-width: 767px) {
+  .pager {
+    padding-top: 0;
+    border-top: 0;
+  }
+}

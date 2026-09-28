@@ -1,0 +1,23 @@
+.badge {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-white);
+}
+
+.new {
+  background: var(--c-ink);
+}
+
+.sale {
+  background: var(--c-red);
+}
+
+.out {
+  background: var(--c-badge-out);
+}
+
+.soon {
+  background: var(--c-red);
+}

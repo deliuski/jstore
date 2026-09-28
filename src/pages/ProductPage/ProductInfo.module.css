@@ -1,0 +1,45 @@
+.accordion {
+  border-top: 1px solid var(--c-line);
+}
+
+.item {
+  border-bottom: 1px solid var(--c-line);
+}
+
+.toggle {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--c-ink);
+  text-align: left;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  text-transform: uppercase;
+}
+
+.body {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--c-muted);
+}
+
+@media (max-width: 767px) {
+  .toggle {
+    height: 56px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+
+  .body {
+    font-size: 14px;
+  }
+}

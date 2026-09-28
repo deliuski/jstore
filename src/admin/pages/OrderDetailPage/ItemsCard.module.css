@@ -1,0 +1,92 @@
+.count {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--a-muted);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid var(--a-line);
+}
+
+.info {
+  min-width: 0;
+  flex: 1;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.meta {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  font-size: 13.5px;
+  color: var(--a-muted);
+}
+
+.size {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--a-ink);
+}
+
+.lineTotal {
+  flex-shrink: 0;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.subtotal {
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  border-top: 1px solid var(--a-border);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--a-muted);
+}
+
+.subtotalValue {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  letter-spacing: 0;
+  color: var(--a-ink);
+}
+
+/* Phones: the line total moves under the item details. */
+@media (max-width: 767px) {
+  .row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 6px 12px;
+  }
+
+  .lineTotal {
+    grid-column: 2;
+  }
+}

@@ -1,0 +1,79 @@
+.pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: start;
+  gap: 16px;
+}
+
+.column {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.phone {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.phone:hover {
+  color: var(--a-red);
+}
+
+/* Without room for a side column the cards share one grid; the status control comes first. */
+@media (max-width: 1279px) {
+  .layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'status customer'
+      'items items'
+      'delivery payment';
+    align-items: stretch;
+  }
+
+  .column {
+    display: contents;
+  }
+
+  .status {
+    grid-area: status;
+  }
+
+  .customer {
+    grid-area: customer;
+  }
+
+  .items {
+    grid-area: items;
+  }
+
+  .delivery {
+    grid-area: delivery;
+  }
+
+  .payment {
+    grid-area: payment;
+  }
+}
+
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'status'
+      'items'
+      'customer'
+      'delivery'
+      'payment';
+    align-items: start;
+    gap: 12px;
+  }
+}

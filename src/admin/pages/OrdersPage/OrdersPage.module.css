@@ -1,0 +1,37 @@
+.search {
+  width: 300px;
+}
+
+.toolbar {
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.method {
+  width: 200px;
+}
+
+@media (max-width: 767px) {
+  .search,
+  .method {
+    width: 100%;
+  }
+
+  .search {
+    flex: 1 1 100%;
+  }
+
+  /* The orders are separate cards here (see OrdersTable), so the list itself sits on the page background. */
+  .card {
+    padding: 0;
+    background: none;
+  }
+
+  .toolbar {
+    margin-bottom: 14px;
+  }
+}

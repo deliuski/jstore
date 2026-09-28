@@ -1,0 +1,205 @@
+.summary {
+  position: sticky;
+  top: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1.5px solid var(--c-ink);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.edit {
+  font-size: 14px;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.edit:hover {
+  color: var(--c-red);
+}
+
+.items {
+  /* Long carts scroll inside the sticky card so the button stays reachable. */
+  max-height: 38vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  border-top: 1px solid var(--c-line);
+}
+
+.item {
+  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid var(--c-line);
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  --mark-size: 18px;
+}
+
+.info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  font-size: 13.5px;
+  color: var(--c-muted);
+}
+
+.preorder {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-red);
+}
+
+.price {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+.rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row,
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.row {
+  font-size: 15px;
+}
+
+.row dt {
+  color: var(--c-muted);
+}
+
+.row dd,
+.totalRow dd {
+  margin: 0;
+  text-align: right;
+}
+
+.row dd {
+  font-weight: 500;
+}
+
+.totalRow {
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-line);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.totalRow dt {
+  font-size: 20px;
+}
+
+.totalRow dd {
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+.note {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+@media (max-width: 1279px) {
+  .summary {
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .summary {
+    position: static;
+  }
+
+  .items {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 767px) {
+  .summary {
+    padding: 22px 18px;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .item {
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+
+  .totalRow dd {
+    font-size: 26px;
+  }
+}

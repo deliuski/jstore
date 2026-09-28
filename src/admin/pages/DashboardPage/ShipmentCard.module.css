@@ -1,0 +1,74 @@
+.card {
+  padding: 22px;
+  border-radius: var(--a-radius);
+  background: var(--a-dark);
+  color: var(--a-on-dark);
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--a-subtle);
+}
+
+.countRow {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 44px;
+  white-space: nowrap;
+  color: var(--a-red-glow);
+  text-shadow: 0 0 18px rgb(255 84 70 / 45%);
+}
+
+.unit {
+  font-size: 13px;
+  color: var(--a-subtle);
+}
+
+.unscheduled {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 44px;
+  text-transform: uppercase;
+  color: var(--a-subtle);
+}
+
+.preorders {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--a-subtle);
+}
+
+.preorders:hover .booked {
+  color: var(--a-red-glow);
+}
+
+.booked {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--a-on-dark);
+  transition: color 0.15s;
+}
+
+.bar {
+  margin-top: 7px;
+}

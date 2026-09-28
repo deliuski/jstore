@@ -1,0 +1,406 @@
+[ Prod Env ]
+
+{{ API_BASE_URL }} : https://apis.bonum.mn
+
+{{ APP_SECRET }}: Ask Bonum
+
+{{ DEFAULT_TERMINAL_ID }} : Ask Bonum
+
+Localization:
+
+Language:
+Accept-Language: mn | en
+
+use this header to all requestes to get back localized message.
+
+AUTHORIZATION
+Bearer Token
+Token
+{{accessToken}}
+
+POST
+Create Card Token
+{{API_BASE_URL}}/mpay-service/merchant/cards/tokenize/request
+It creates credit card tokenization request and returns a follow-up link.
+
+the follow-up link will take the user throgth steps necessary. once the process is done and token is generated, "webhook" (server-to-server) notification (http-post) will be sent the merchant's webhook url which is registered in the merchat portal site
+
+"callback" is the 3rd party's url, user browser will be redirected to this after tokenization process is done.
+
+"transactionId" is the 3rd party's unique id for the tokenization request, it will be attached to the tokenization process and will be sent to the 3rd party's web-hook url with the customer credit card token.
+
+"payment" is an optional field, when actual payment transaction and token is processed, you can use payment.amount field. if no payment.amout is passed, 0.01 MNT will be processed for verfication.
+
+"subscription" is optional, if set, the card token is SUBSCRIBED to the payment plan
+
+"planId" merchant's payment plan Id, can be found "List of Payment Plans" service.
+
+"cycleValue" possible values based on the given plan
+
+1 - 7 for WEEKLY plan, 1-Mon, ... 7-Sun
+
+1 - 31 for MONTHLY plan
+
+1 - 366 for YEARLY plan
+
+"cycles" is optional, how many cycles the subscription runs for. If no value to this, the subscription will be active for good. For example: cycles=10, it means the subscription will be active for 10 cycles. If cycles=null, the subscription will be active until the cancellation request is issued.
+
+"payNow" if true, "cycleValue" will be ignored, the current date becomes the first billing date, and the next billing date will be calculated with payment plan's recurring type on the current date.
+
+"custEmail" is optional, subsription payment notification will be sent to this email.
+
+"items" is optinal.
+
+"image" item's image url shown on the hosted page.
+
+"title" item's title shown on the hosted page.
+
+NOTE: If subscription date is the same day of payment plan's cycleValue, then payment transaction is processed upon the subscription. For example: Let take a monthly payment plan, its cycleValue is 1 which means the first day of every month, payment is processed automatically, and if a user subscribes to it on the first day of a month, the payment is immediately processed during the subscription.
+
+AUTHORIZATION
+Bearer Token
+This request is using Bearer Token from collectionBonum Gateway APIs
+HEADERS
+Accept-Language
+mn
+
+Body
+raw (json)
+View More
+json
+{
+    "callback" : "https://merchant-web/card-token-callback?id=20250512180511001",
+    "transactionId" : "24za20250512180511006",
+
+    "payment" : { 
+        "amount" : 10.00
+    },
+
+    "subscription1" : { 
+        "planId" : 1,
+        "cycleValue" : "5",
+        "cycles" : 5, 
+        "payNow" : false, 
+        "custEmail" : "test@gmail.com"
+    },
+
+    "items" : [
+        {
+            "image" : "https://www.google.com",
+            "title" : "Item 6 title",
+            "remark" : "Item 6 remark",
+            "amount" : 1,
+            "count" : 10
+        }
+    ]
+}
+Example Request
+Create Card Token
+View More
+curl
+curl --location 'https://apis.bonum.mn/mpay-service/merchant/cards/tokenize/request' \
+--data '{
+    "callback" : "https://merchant-web/card-token-callback?id=20250512180511001",
+    "transactionId" : "ab20250512180511006",
+
+    "subscription" : { //optional
+        "planId" : 1,
+        "cycleValue" : "1",
+        "cycles" : 10 // optional
+    },
+
+    "items" : [
+        {
+            "image" : "https://www.google.com",
+            "title" : "Item 6 title",
+            "remark" : "Item 6 remark",
+            "amount" : 1,
+            "count" : 10
+        }
+    ]
+}'
+200 OK
+Example Response
+Body
+Headers (14)
+View More
+json
+{
+  "followUpLink": "https://ecommerce.bonum.mn/tokenize?id=73c642ec1df9cabe7fd7d4a2777f4ff18989a79321cea0dbca83bb7aa2d5886b",
+  "id": "73c642ec1df9cabe7fd7d4a2777f4ff18989a79321cea0dbca83bb7aa2d5886b"
+}
+POST
+Create Card Token Web Hook Message
+On a successful card token generation, a webhook message will be sent the merchant's registered webhook message.
+
+Webhook message fields:
+
+"token" card token string.
+
+"mask" masked card number
+
+"expiry" card's expire month
+
+"bank" card's issuer bank
+
+"transactionId" merchant's transaction id used in "Card Create Token" request body
+
+"amounts" дүнтэй, эсвэл subscription.тай үед төлбөрийн дүн
+
+"subscriptions" payment plan руу subscribe хийсэн бол subscription.ны id
+
+Webhook message body:
+
+View More
+json
+{
+    "type":"CARD-TOKEN",
+    "status":"SUCCESS",
+    "message":"",
+    "body":{
+        "token":"1fc53f9389f489ff6e04617bd6338a710e1e7c579cb572aec421f560f363119c45de074278126f4e9adbc626cccba687513731bc9f8cd1737efed3e58d30dfb9",
+        "mask":"5150 23** **** 4778",
+        "expiry":"2026/11",
+        "bank":{
+            "id":19,
+            "code":"150000",
+            "name":"Голомт банк",
+            "icon":"https://bonum-prod-resource.s3.us-east-2.amazonaws.com/golomt.png",
+            "iBanCode":"0015",
+            "transferCode":"GMT"
+        },
+        "transactionId":"6ab20250512180511006",
+        "completedAt":"2026-01-26 12:58:03",
+        "amounts":[
+            {
+                "amount":5.00,
+                "currency":"MNT"
+            }
+        ],
+        "subscriptions":[
+            {
+                "subscriptionId":1,
+                "planId":1,
+                "nextBillingDate":"2026-02-02 00:00:00",
+            }
+        ]
+    }
+}
+AUTHORIZATION
+Bearer Token
+This request is using Bearer Token from collectionBonum Gateway APIs
+Body
+raw (json)
+View More
+json
+{
+    "type":"CARD-TOKEN",
+    "status":"SUCCESS",
+    "message":"",
+    "body":{
+        "token":"<CARD-TOKEN-VALUE>",
+        "mask":"5150 23** **** 4778",
+        "expiry":"2026/11",
+        "bank":{
+            "id":19,
+            "code":"150000",
+            "name":"Голомт банк",
+            "icon":"https://bonum-prod-resource.s3.us-east-2.amazonaws.com/golomt.png",
+            "iBanCode":"0015",
+            "transferCode":"GMT"
+        },
+        "transactionId":"<merchant transaction id>",
+        "completedAt":"2026-01-26 12:58:03",
+        "amounts":[
+            {
+                "amount":5.00,
+                "currency":"MNT"
+            }
+        ],
+        "subscriptions":[
+            {
+                "subscriptionId":1,
+                "planId":1,
+                "nextBillingDate":"2026-02-02 00:00:00"
+            }
+        ]
+    }
+}
+Example Request
+Create Card Token Web Hook Message
+View More
+curl
+curl --location '' \
+--data '{
+    "type":"CARD-TOKEN",
+    "status":"SUCCESS",
+    "message":"",
+    "body":{
+        "token":"<CARD-TOKEN-VALUE>",
+        "mask":"5150 23** **** 4778",
+        "expiry":"2026/11",
+        "bank":{
+            "id":19,
+            "code":"150000",
+            "name":"Голомт банк",
+            "icon":"https://bonum-prod-resource.s3.us-east-2.amazonaws.com/golomt.png",
+            "iBanCode":"0015",
+            "transferCode":"GMT"
+        },
+        "transactionId":"<merchant transaction id>",
+        "completedAt":"2026-01-26 12:58:03",
+        "amounts":[
+            {
+                "amount":5.00,
+                "currency":"MNT"
+            }
+        ],
+        "subscriptions":[
+            {
+                "subscriptionId":1,
+                "planId":1,
+                "nextBillingDate":"2026-02-02 00:00:00"
+            }
+        ]
+    }
+}
+'
+Example Response
+Body
+Headers (0)
+No response body
+This request doesn't return any response body
+POST
+Purchase
+{{API_BASE_URL}}/mpay-service/merchant/transaction/purchase
+Make a Payment Using a Card Token
+
+This endpoint initiates a payment using a previously generated card token.
+
+Note:
+
+During periods of high traffic, payment requests may be placed into a processing queue. Queued payments will be executed asynchronously, and the final result will be delivered to the merchant’s configured webhook endpoint.
+
+Caution:
+
+Do not rely on or expose the response["errorCode"] field. This field is intended for internal use only.
+
+Additional Information:
+For detailed behavior and possible outcomes, refer to the sample request and response examples
+
+AUTHORIZATION
+Bearer Token
+This request is using Bearer Token from collectionBonum Gateway APIs
+HEADERS
+X-CARD-TOKEN
+1fc53f9389f489ff6e04617bd6338a71ca27985bb080d06f01bed52475447345
+
+Accept-Language
+mn
+
+Body
+raw (json)
+json
+{
+    "amount" : 15,
+    "currency" : "MNT",
+    "transactionId" : "" // transactionid
+}
+Example Request
+Амжилттай гүйлгээ
+View More
+curl
+curl --location -g '{{TOKEN_BASE_URL}}/merchant/transaction/purchase' \
+--header 'X-CARD-TOKEN: 1fc53f9389f489ff6e04617bd6338a71ca27985bb080d06f01bed52475447345' \
+--header 'Accept-Language: mn' \
+--data '{
+    "amount" : 5,
+    "currency" : "MNT", 
+    "transactionId" : "" // transactionid
+}'
+200 OK
+Example Response
+Body
+Headers (0)
+View More
+{
+  "traceId": "6965c23f4a88878d6f11b97bd0dc4f57",
+  "errorCode": "${invalid.bonum.response.00}",
+  "error": null,
+  "message": "Төлбөр амжилттай хийгдлээ (00)",
+  "data": {
+    "id": 172345,
+    "completedAt": "2026-01-13 11:55:44",
+    "status": "SUCCESS",
+    "description": "",
+    "cardStatus": "ACTIVE"
+  },
+  "detail": null,
+  "duration": 759,
+  "status": 200
+}
+GET
+Purchase Async WebHook
+When purchase is queued, and completed the payment asyncronously, this webhook message will be sent
+
+json
+{
+    "type":"TOKEN-PAYMENT",
+    "status":"SUCCESS", // SUCCESS | FAILED
+    "message":"",
+    "body":{
+        "transactionId":"6ab20250512180511006",
+        "completedAt":"2026-01-26 12:58:03",
+    }
+}
+AUTHORIZATION
+Bearer Token
+This request is using Bearer Token from collectionBonum Gateway APIs
+HEADERS
+X-CARD-TOKEN
+1fc53f9389f489ff6e04617bd6338a71ca27985bb080d06f01bed52475447345
+
+Accept-Language
+mn
+
+Body
+raw (json)
+json
+{
+    "amount" : 15,
+    "currency" : "MNT",
+    "transactionId" : "" // transactionid
+}
+Example Request
+Purchase Async WebHook
+View More
+curl
+curl --location --request GET '' \
+--header 'X-CARD-TOKEN: 1fc53f9389f489ff6e04617bd6338a71ca27985bb080d06f01bed52475447345' \
+--header 'Accept-Language: mn' \
+--data '{
+    "amount" : 15,
+    "currency" : "MNT",
+    "transactionId" : "" // transactionid
+}'
+Example Response
+Body
+Headers (0)
+No response body
+This request doesn't return any response body
+DELETE
+Rollback Purchase
+{{API_BASE_URL}}/mpay-service/merchant/transaction/reverse/:transactionId
+this service tries to reverse a token payment.
+
+transactionId pathvariable is the merchant's transactionid value.
+AUTHORIZATION
+Bearer Token
+This request is using Bearer Token from collectionBonum Gateway APIs
+HEADERS
+X-CARD-TOKEN
+1fc53f9389f489ff6e04617bd6338a71ca27985bb080d06f01bed52475447345
+
+PATH VARIABLES
+transactionId
+Merchant's transactionId

@@ -1,0 +1,325 @@
+/* Breadcrumb — same as the product page */
+.breadcrumb {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 28px 88px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.crumbs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.crumbs li {
+  display: flex;
+  gap: 10px;
+}
+
+.crumbs li + li::before {
+  content: '/' / '';
+}
+
+.crumbLink {
+  text-decoration: underline;
+}
+
+.crumbLink:hover {
+  color: var(--c-red);
+}
+
+.crumbCurrent {
+  color: var(--c-ink);
+}
+
+/* Info panel + map */
+.main {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 88px 110px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  align-items: start;
+  gap: 72px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.storeName {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-muted);
+}
+
+.facts {
+  margin: 0;
+  border-top: 1px solid var(--c-line);
+}
+
+.fact {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.value {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Hours may be typed on several lines in the admin. */
+.hours {
+  white-space: pre-line;
+}
+
+.line {
+  display: block;
+}
+
+/* Phone on the left, social icons on the right. */
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.phone {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  transition: color 0.15s;
+}
+
+.phone:hover {
+  color: var(--c-red);
+}
+
+.socials {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+}
+
+.social {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--c-ink);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.social:hover {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.directions {
+  width: 100%;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-red);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: 0.08em;
+  transition: background-color 0.15s;
+}
+
+.directions:hover {
+  background: #c90f33;
+}
+
+.messenger {
+  width: 100%;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px solid var(--c-ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.messenger:hover {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+/* Two classes, so these win over StoreMap's own height whatever the CSS order. */
+.main .map {
+  height: 560px;
+}
+
+/* Tiles come from the internet: show a quiet grid until they arrive. */
+.map :global(.leaflet-container) {
+  background-color: var(--c-placeholder);
+  background-image:
+    linear-gradient(var(--c-line) 1px, transparent 1px), linear-gradient(90deg, var(--c-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@media (max-width: 1279px) {
+  .breadcrumb {
+    padding: 28px 40px;
+  }
+
+  .main {
+    padding: 0 40px 100px;
+    gap: 48px;
+  }
+
+  .title {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .breadcrumb {
+    padding: 20px 24px;
+  }
+
+  .main {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 24px 80px;
+    gap: 40px;
+  }
+
+  /* Facts and buttons side by side above a full-width map. */
+  .info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 28px 40px;
+  }
+
+  .heading {
+    grid-column: 1 / -1;
+  }
+
+  .main .map {
+    height: 460px;
+  }
+}
+
+@media (max-width: 767px) {
+  .breadcrumb {
+    padding: 16px 16px 14px;
+    font-size: 12px;
+  }
+
+  .crumbs,
+  .crumbs li {
+    gap: 8px;
+  }
+
+  .main {
+    padding: 0 16px 44px;
+    gap: 28px;
+  }
+
+  .info {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .storeName {
+    font-size: 14px;
+  }
+
+  .fact {
+    padding: 14px 0;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .value {
+    font-size: 16px;
+  }
+
+  .phone {
+    font-size: 24px;
+  }
+
+  .directions {
+    height: 56px;
+    font-size: 19px;
+  }
+
+  .messenger {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  .main .map {
+    height: 360px;
+  }
+}

@@ -1,0 +1,28 @@
+.stock {
+  margin-top: 14px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--a-line);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--a-muted);
+}
+
+.stock::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--a-subtle);
+}
+
+.deducted {
+  color: var(--a-ink);
+}
+
+.deducted::before {
+  background: #22683f;
+}

@@ -1,0 +1,81 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 18px 16px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+/* Save bar: ends the form; with unsaved changes it floats at the viewport bottom. */
+.bar {
+  padding: 12px 12px 12px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+  background: var(--a-surface);
+}
+
+.floating {
+  position: sticky;
+  bottom: 16px;
+  z-index: 5;
+  box-shadow: 0 10px 30px rgb(22 20 18 / 12%);
+}
+
+.status {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--a-muted);
+}
+
+.statusDirty {
+  font-weight: 600;
+  color: var(--a-ink);
+}
+
+.statusError {
+  font-weight: 600;
+  color: var(--a-red-text);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 767px) {
+  .fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .bar {
+    padding: 12px;
+  }
+
+  .floating {
+    bottom: 8px;
+  }
+
+  .status,
+  .actions {
+    flex: 1 1 100%;
+  }
+
+  .action {
+    flex: 1 1 0;
+  }
+}

@@ -1,0 +1,285 @@
+.page {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 88px 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 440px;
+  align-items: start;
+  gap: 64px;
+}
+
+.sections {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 26px;
+  border-top: 1.5px solid var(--c-ink);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.step {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-ink);
+  color: var(--c-white);
+  font-size: 17px;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.choices {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  border: 0;
+}
+
+.payments {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.selectWrap {
+  position: relative;
+}
+
+.selectWrap select {
+  padding-right: 48px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectIcon {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%) rotate(90deg);
+  pointer-events: none;
+}
+
+.pickup {
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  background: var(--c-placeholder);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.pickup svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--c-red);
+}
+
+.pickupText {
+  min-width: 0;
+}
+
+.pickupName {
+  margin-bottom: 2px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  text-transform: uppercase;
+}
+
+.pickupLink {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.pickupLink:hover {
+  color: var(--c-red);
+}
+
+.hint {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+/* Messages above the submit button */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--c-red);
+}
+
+.alert svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.alertLink {
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.submit {
+  width: 100%;
+  height: 62px;
+  background: var(--c-red);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: 0.08em;
+  transition: background-color 0.15s;
+}
+
+.submit:not(:disabled):hover {
+  background: #c90f33;
+}
+
+.submit:disabled {
+  background: var(--c-badge-out);
+}
+
+.after {
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--c-muted);
+}
+
+@media (max-width: 1279px) {
+  .page {
+    padding: 0 40px 100px;
+  }
+
+  .title {
+    font-size: 46px;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 40px;
+  }
+
+  .payments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1023px) {
+  .page {
+    padding: 0 24px 80px;
+    gap: 28px;
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+
+  .payments {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding: 0 16px 44px;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .layout,
+  .sections {
+    gap: 32px;
+  }
+
+  .section {
+    padding-top: 22px;
+    gap: 16px;
+  }
+
+  .sectionTitle {
+    gap: 12px;
+    font-size: 24px;
+  }
+
+  .step {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+
+  .pair,
+  .choices,
+  .payments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pair {
+    gap: 16px;
+  }
+
+  .choices {
+    gap: 8px;
+  }
+
+  .pickup {
+    padding: 16px;
+  }
+
+  .submit {
+    height: 56px;
+    font-size: 19px;
+  }
+}

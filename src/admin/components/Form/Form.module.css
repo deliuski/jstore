@@ -1,0 +1,196 @@
+.field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.required {
+  color: var(--a-red);
+}
+
+.hint,
+.error {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.hint {
+  color: var(--a-muted);
+}
+
+.error {
+  color: var(--a-red-text);
+}
+
+.control {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius-sm);
+  background: var(--a-surface);
+  color: var(--a-ink);
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+
+.control:hover {
+  border-color: #cfc8bd;
+}
+
+.control:focus {
+  border-color: var(--a-ink);
+}
+
+.control:disabled {
+  background: var(--a-bg);
+  color: var(--a-muted);
+  cursor: not-allowed;
+}
+
+.invalid,
+.invalid:hover {
+  border-color: var(--a-red);
+}
+
+.textarea {
+  height: auto;
+  min-height: 110px;
+  padding: 11px 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.select {
+  padding-right: 38px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23161412' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+
+/* NumberField */
+.numberWrap {
+  position: relative;
+  display: flex;
+}
+
+.number {
+  appearance: textfield;
+}
+
+.number::-webkit-inner-spin-button,
+.number::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.withSuffix {
+  padding-right: 34px;
+}
+
+.suffix {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--a-muted);
+  pointer-events: none;
+}
+
+.stepper .number {
+  border-radius: 0;
+  text-align: center;
+}
+
+.step {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--a-border);
+  background: var(--a-surface);
+}
+
+.step:first-child {
+  border-right: 0;
+  border-radius: var(--a-radius-sm) 0 0 var(--a-radius-sm);
+}
+
+.step:last-child {
+  border-left: 0;
+  border-radius: 0 var(--a-radius-sm) var(--a-radius-sm) 0;
+}
+
+.step:hover:not(:disabled) {
+  background: var(--a-bg);
+}
+
+.step:disabled {
+  color: #c9c3b9;
+}
+
+/* Toggle */
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.switch {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #d9d3c9;
+  transition: background-color 0.15s;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--c-white);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+  transition: transform 0.15s;
+}
+
+.switch[aria-checked='true'] {
+  background: var(--a-red);
+}
+
+.switch[aria-checked='true']::after {
+  transform: translateX(16px);
+}
+
+.switch:disabled {
+  opacity: 0.5;
+}
+
+.toggleText {
+  padding-top: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggleLabel {
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
