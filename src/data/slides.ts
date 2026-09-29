@@ -1,4 +1,5 @@
 import type { Product } from '../models/product'
+import { CATALOG_PATH } from './site'
 
 export interface HeroSlide {
   id: string

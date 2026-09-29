@@ -22,7 +22,6 @@ const CATEGORIES: CategoryFilter[] = ['all', 'sneaker', 'boot', 'bag']
 
 export function InventoryPage() {
   const products = useAllProducts(true)
-  const toast = useToast()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<CategoryFilter>('all')
 

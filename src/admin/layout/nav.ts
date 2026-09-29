@@ -4,7 +4,6 @@ import {
   GridIcon,
   HourglassIcon,
   LayersIcon,
-  MessageIcon,
   ReceiptIcon,
   SettingsIcon,
 } from '../components/icons'
