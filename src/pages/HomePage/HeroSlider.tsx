@@ -1,17 +1,29 @@
-import { useRef, useState, type PointerEvent } from 'react'
+import { useMemo, useRef, useState, type PointerEvent } from 'react'
 import { Link } from 'react-router'
 import { ChevronLeftIcon, ChevronRightIcon } from '../../components/icons'
-import { HERO_SLIDES } from '../../data/slides'
+import { useCatalog } from '../../hooks/data'
+import { HERO_SLIDES, heroSlidesFromProducts, type HeroSlide } from '../../data/slides'
 import { cx } from '../../lib/cx'
 import s from './HeroSlider.module.css'
 
 const SWIPE_THRESHOLD = 50
 
 export function HeroSlider() {
+  const catalog = useCatalog()
+  // Real products once the catalog loads; the design showcase until then.
+  const slides = useMemo(() => {
+    const fromCatalog = catalog.data ? heroSlidesFromProducts(catalog.data) : []
+    return fromCatalog.length > 0 ? fromCatalog : HERO_SLIDES
+  }, [catalog.data])
+
+  return <HeroCarousel slides={slides} />
+}
+
+function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0)
   const swipeStartX = useRef<number | null>(null)
-  const count = HERO_SLIDES.length
-  const slide = HERO_SLIDES[index]
+  const count = slides.length
+  const slide = slides[Math.min(index, count - 1)]
 
   const goTo = (next: number) => setIndex((next + count) % count)
 
@@ -38,7 +50,7 @@ export function HeroSlider() {
       }}
     >
       <div className={s.stage}>
-        <div key={index} className={s.slide} aria-roledescription="slide" aria-label={`${index + 1} / ${count}`}>
+        <div key={slide.id} className={s.slide} aria-roledescription="slide" aria-label={`${index + 1} / ${count}`}>
           <span className={s.ghost} aria-hidden="true">
             {slide.ghost}
           </span>
@@ -49,8 +61,16 @@ export function HeroSlider() {
               ХУДАЛДАЖ АВАХ
             </Link>
           </div>
-          <img className={s.shoe} src={slide.image} alt={slide.imageAlt} />
-          <img className={cx(s.shoe, s.shoeMirrored)} src={slide.image} alt="" />
+          {slide.image ? (
+            <>
+              <img className={s.shoe} src={slide.image} alt={slide.imageAlt} />
+              <img className={cx(s.shoe, s.shoeMirrored)} src={slide.image} alt="" />
+            </>
+          ) : (
+            <div className={s.shoePlaceholder} aria-hidden="true">
+              {slide.ghost}
+            </div>
+          )}
         </div>
 
         <button type="button" className={cx(s.arrow, s.arrowPrev)} aria-label="Өмнөх" onClick={() => goTo(index - 1)}>
@@ -61,7 +81,7 @@ export function HeroSlider() {
         </button>
 
         <div className={s.dots}>
-          {HERO_SLIDES.map((item, i) => (
+          {slides.map((item, i) => (
             <button
               key={item.id}
               type="button"

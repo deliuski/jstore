@@ -34,28 +34,29 @@ Bonum-той гэрээ байгуулсны дараа тэд дараах мэ
 
 ## 3. Түлхүүрүүдийг Functions рүү оруулах
 
-Төслийн хавтаас:
+Төслийн хавтаас (ягиж бичихгүй, `printf` ашигла — newline орохгүй):
 
 ```bash
-firebase functions:secrets:set BONUM_APP_SECRET
-firebase functions:secrets:set BONUM_TERMINAL_ID
-firebase functions:secrets:set BONUM_MERCHANT_CHECKSUM_KEY
+printf "<APP_SECRET>" | firebase functions:secrets:set BONUM_APP_SECRET --data-file -
+printf "<TERMINAL_ID>" | firebase functions:secrets:set BONUM_TERMINAL_ID --data-file -
+printf "<CHECKSUM_KEY>" | firebase functions:secrets:set BONUM_MERCHANT_CHECKSUM_KEY --data-file -
+printf "https://jstore-henna.vercel.app" | firebase functions:secrets:set SITE_URL --data-file -
 ```
 
-Тест / бодит орчныг functions config-оор:
+Нууц өөрчлөгдсөн бол дараа нь дахин deploy хийх:
 
 ```bash
-# Тест орчин (эхэлж эндээс шалгана):
-firebase functions:config:set bonum.base_url="https://testapi.bonum.mn"
+firebase deploy --only functions
+```
+
+Орчин (test → production) солих бол дараах secret-ийг шинэчилнэ — `BONUM_BASE_URL`:
+
+```bash
+# Тест орчин (default — тавиагүй үед):
+printf "https://testapi.bonum.mn" | firebase functions:secrets:set BONUM_BASE_URL --data-file -
 
 # Бодит орчин руу шилжихэд:
-firebase functions:config:set bonum.base_url="https://apis.bonum.mn"
-```
-
-Мөн сайтын хаягийг (webhook хаяг зөв үүсэхийн тулд):
-
-```bash
-firebase functions:config:set site.url="https://<таны-хостинг-хаяг>"
+printf "https://apis.bonum.mn" | firebase functions:secrets:set BONUM_BASE_URL --data-file -
 ```
 
 ---
@@ -92,9 +93,9 @@ firebase deploy --only functions
 Deploy хийсний дараа functions URL-ууд:
 
 - Callable: `createBonumInvoice`
-- Webhook: `https://us-central1-<project-id>.cloudfunctions.net/bonumWebhook`
+- Webhook: `https://us-central1-ger-fx.cloudfunctions.net/bonumWebhook`
 
-**Bonum-ийн merchant порталаас** webhook callback хаягийг дээрх URL болгож тохируулна.
+**Bonum-ийн merchant порталаас** webhook (server-to-server) callback хаягийг дээрх URL болгож тохируулна.
 
 ---
 

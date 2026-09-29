@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link, NavLink } from 'react-router'
 import { CloseIcon } from '../../components/icons'
-import { useStoreSettings } from '../../hooks/data'
 import { cx } from '../../lib/cx'
 import { AdminLogo } from './AdminLogo'
 import { ADMIN_HOME_PATH, ADMIN_NAV } from './nav'
@@ -18,7 +17,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({ id, open, newOrders, adminName, onClose }: SidebarProps) {
-  const { messengerUrl } = useStoreSettings()
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
@@ -40,15 +38,6 @@ export function Sidebar({ id, open, newOrders, adminName, onClose }: SidebarProp
       <nav className={s.nav} aria-label="Удирдлага">
         {ADMIN_NAV.map((item) => {
           const Icon = item.icon
-          if ('messenger' in item) {
-            return (
-              <a key={item.label} href={messengerUrl} target="_blank" rel="noopener noreferrer" className={s.link}>
-                <Icon size={18} className={s.icon} />
-                {item.label}
-                <span className="visually-hidden"> (шинэ цонхонд)</span>
-              </a>
-            )
-          }
           return (
             <NavLink
               key={item.to}

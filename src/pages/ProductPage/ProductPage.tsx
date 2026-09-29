@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router'
-import { ChatIcon, CheckIcon } from '../../components/icons'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
+import { BagIcon, CheckIcon } from '../../components/icons'
 import { PageError, PageLoader } from '../../components/PageStatus/PageStatus'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
 import { ProductGrid } from '../../components/ProductGrid/ProductGrid'
 import { useShop } from '../../context/shop'
-import { BRAND, CART_PATH, CATALOG_PATH } from '../../data/site'
-import { useCatalog, useStoreSettings } from '../../hooks/data'
+import { BRAND, CART_PATH, CATALOG_PATH, CHECKOUT_PATH } from '../../data/site'
+import { useCatalog } from '../../hooks/data'
 import { formatPrice } from '../../lib/format'
 import {
   CATEGORY_LABELS,
@@ -26,10 +26,15 @@ import s from './ProductPage.module.css'
 const DEFAULT_SIZE = '42'
 const RELATED_COUNT = 5
 
+/**
+ * The design opens with EU 42 selected. When 42 is unavailable (sold out or not
+ * offered), the first selectable size is picked so an order button always works.
+ */
 function initialSize(product: Product, requested: string | null): string | null {
   const selectable = product.status === 'soon' ? product.sizes.map((size) => size.label) : availableSizes(product)
   if (requested && selectable.includes(requested)) return requested
-  return selectable.includes(DEFAULT_SIZE) ? DEFAULT_SIZE : null
+  if (selectable.includes(DEFAULT_SIZE)) return DEFAULT_SIZE
+  return selectable[0] ?? null
 }
 
 export function ProductPage() {
@@ -50,8 +55,8 @@ export function ProductPage() {
 
 function ProductDetails({ product, related }: { product: Product; related: Product[] }) {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const { addToCart } = useShop()
-  const { messengerUrl } = useStoreSettings()
   const [size, setSize] = useState(() => initialSize(product, searchParams.get('size')))
   const [added, setAdded] = useState(false)
 
@@ -124,10 +129,17 @@ function ProductDetails({ product, related }: { product: Product; related: Produ
             >
               {soldOut ? 'ДУУССАН' : preorder ? 'УРЬДЧИЛАН ЗАХИАЛАХ' : 'САГСАНД НЭМЭХ'}
             </button>
-            <a href={messengerUrl} className={s.messenger}>
-              <ChatIcon size={20} />
-              MESSENGER-ЭЭР АСУУХ
-            </a>
+            <button
+              type="button"
+              className={s.messenger}
+              onClick={() => {
+                handleAddToCart()
+                navigate(CHECKOUT_PATH)
+              }}
+            >
+              <BagIcon size={20} />
+              ЗАХИАЛАХ
+            </button>
           </div>
 
           {added && (

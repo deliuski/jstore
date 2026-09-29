@@ -1,20 +1,43 @@
-import { CATALOG_PATH } from './site'
+import type { Product } from '../models/product'
 
 export interface HeroSlide {
   id: string
+  /** Small uppercase line above the title ("ШИНЭ ИРСЭН", "ОНЦЛОХ"). */
   kicker: string
   title: string
-  /** Huge outlined word behind the shoes. */
+  /** Huge outlined word behind the shoe. */
   ghost: string
-  /** Transparent PNG cut-out of the shoe. */
-  image: string
+  /** The product's photo URL; null renders the ProductImage placeholder tile. */
+  image: string | null
   imageAlt: string
-  /** Where "ХУДАЛДАЖ АВАХ" goes — the catalog searched for this model. */
+  /** Where "ХУДАЛДАЖ АВАХ" goes — the product page. */
   href: string
 }
 
-const searchFor = (model: string) => `${CATALOG_PATH}?q=${encodeURIComponent(model)}`
+const KICKERS = ['ШИНЭ ИРСЭН', 'ОНЦЛОХ', 'ШИНЭ ИРСЭН'] as const
 
+/**
+ * Builds the hero slides from the live catalog: newest published products first,
+ * top 3. The kicker alternates ШИНЭ ИРСЭН / ОНЦЛОХ; the ghost word comes from
+ * the product mark ("AJ9", "ӨВӨЛ"), falling back to the first word of the name.
+ */
+export function heroSlidesFromProducts(products: Product[]): HeroSlide[] {
+  return products
+    .filter((product) => product.status === 'active' || product.status === 'soon')
+    .sort((a, b) => Number(b.isNew) - Number(a.isNew) || Number(b.featured) - Number(a.featured) || a.sortOrder - b.sortOrder)
+    .slice(0, 3)
+    .map((product, index) => ({
+      id: product.id,
+      kicker: KICKERS[index % KICKERS.length],
+      title: product.name,
+      ghost: product.mark || product.name.split(' ')[0]?.toUpperCase() || 'ANZO',
+      image: product.image,
+      imageAlt: product.name,
+      href: `/product/${product.id}`,
+    }))
+}
+
+/** Design-time showcase used only until the catalog has published products. */
 export const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'aj9',
@@ -23,7 +46,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ghost: 'SPACE JAM',
     image: '/images/hero/aj9.png',
     imageAlt: 'Air Jordan 9 Retro',
-    href: searchFor('Air Jordan 9'),
+    href: `${CATALOG_PATH}?q=${encodeURIComponent('Air Jordan 9')}`,
   },
   {
     id: 'aj7',
@@ -32,7 +55,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ghost: 'MIRO',
     image: '/images/hero/aj7.png',
     imageAlt: 'Air Jordan 7 Retro',
-    href: searchFor('Air Jordan 7'),
+    href: `${CATALOG_PATH}?q=${encodeURIComponent('Air Jordan 7')}`,
   },
   {
     id: 'aj16',
@@ -41,6 +64,6 @@ export const HERO_SLIDES: HeroSlide[] = [
     ghost: 'AJ 16',
     image: '/images/hero/aj16.png',
     imageAlt: 'Air Jordan 16 Retro',
-    href: searchFor('Air Jordan 16'),
+    href: `${CATALOG_PATH}?q=${encodeURIComponent('Air Jordan 16')}`,
   },
 ]
