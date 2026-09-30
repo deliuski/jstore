@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
 import { uploadProductImage } from '../../../services/products'
+import { stripImageBackground } from './backgroundRemoval'
 import { errorMessage } from './productForm'
 
 export interface ImageUpload {
   busy: boolean
+  /** Progress message of the current upload (model download / inference / Storage). */
+  progress: string | null
   /** Message of the last failed upload (e.g. Storage not enabled yet). */
   error: string | null
   /** Uploads the files one by one; returns the URLs of those that made it. */
   upload: (files: File[]) => Promise<string[]>
 }
 
-export function useImageUpload(): ImageUpload {
+/** When `stripBackground` is true, the AI removes each photo's background before upload. */
+export function useImageUpload(stripBackground = false): ImageUpload {
   const [busy, setBusy] = useState(false)
+  const [progress, setProgress] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const upload = async (files: File[]) => {
@@ -19,16 +24,20 @@ export function useImageUpload(): ImageUpload {
     setBusy(true)
     setError(null)
     try {
-      for (const file of files) urls.push(await uploadProductImage(file))
+      for (const file of files) {
+        const image = stripBackground ? await stripImageBackground(file, setProgress) : file
+        urls.push(await uploadProductImage(image, setProgress))
+      }
     } catch (uploadError) {
       setError(errorMessage(uploadError))
     } finally {
       setBusy(false)
+      setProgress(null)
     }
     return urls
   }
 
-  return { busy, error, upload }
+  return { busy, progress, error, upload }
 }
 
 /**

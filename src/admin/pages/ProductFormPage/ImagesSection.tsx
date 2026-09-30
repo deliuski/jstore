@@ -5,6 +5,7 @@ import { Button } from '../../components/Button/Button'
 import { Card } from '../../components/Card/Card'
 import { Select } from '../../components/Form/Select'
 import { TextField } from '../../components/Form/TextField'
+import { Toggle } from '../../components/Form/Toggle'
 import { Notice } from '../../components/Notice/Notice'
 import type { ImageUpload } from './formHooks'
 import {
@@ -25,13 +26,25 @@ interface ImagesSectionProps {
   imageError?: string
   mainUpload: ImageUpload
   galleryUpload: ImageUpload
+  /** When true, new uploads go through AI background removal first. */
+  stripBackground: boolean
+  onStripBackgroundChange: (value: boolean) => void
   className?: string
 }
 
 const SOURCE_PLACEHOLDER = 'https://… эсвэл /images/products/p1.jpg'
 
 /** "Зураг": the main photo (upload or URL, fit) and the extra gallery photos. */
-export function ImagesSection({ draft, onChange, imageError, mainUpload, galleryUpload, className }: ImagesSectionProps) {
+export function ImagesSection({
+  draft,
+  onChange,
+  imageError,
+  mainUpload,
+  galleryUpload,
+  stripBackground,
+  onStripBackgroundChange,
+  className,
+}: ImagesSectionProps) {
   const [brokenSrc, setBrokenSrc] = useState<string | null>(null)
   const [galleryUrl, setGalleryUrl] = useState('')
   const [galleryUrlError, setGalleryUrlError] = useState<string>()
@@ -95,6 +108,7 @@ export function ImagesSection({ draft, onChange, imageError, mainUpload, gallery
             <UploadButton
               label={image ? 'Зураг солих' : 'Зураг оруулах'}
               busy={mainUpload.busy}
+              progress={mainUpload.progress}
               onFiles={uploadMain}
             />
             {image && (
@@ -103,6 +117,17 @@ export function ImagesSection({ draft, onChange, imageError, mainUpload, gallery
               </Button>
             )}
           </div>
+          <Toggle
+            label="Дэвсгэр арилгах (AI)"
+            hint="Оруулсан зургийн дэвсгэрийг автоматаар арилгана. Анхны удаад модель татагдаж, удаан үргэлжилнэ."
+            checked={stripBackground}
+            onChange={onStripBackgroundChange}
+          />
+          {(mainUpload.progress || galleryUpload.progress) && (
+            <p className={s.progress} role="status">
+              {mainUpload.progress ?? galleryUpload.progress}
+            </p>
+          )}
           {mainUpload.error && (
             <Notice tone="error">
               Зураг оруулж чадсангүй: {mainUpload.error}
@@ -178,7 +203,7 @@ export function ImagesSection({ draft, onChange, imageError, mainUpload, gallery
         )}
 
         <div className={s.add}>
-          <UploadButton label="Зураг нэмэх" multiple busy={galleryUpload.busy} onFiles={uploadGallery} />
+          <UploadButton label="Зураг нэмэх" multiple busy={galleryUpload.busy} progress={galleryUpload.progress} onFiles={uploadGallery} />
           <div className={s.urlAdd}>
             <TextField
               className={s.urlField}

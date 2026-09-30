@@ -55,6 +55,12 @@
   gap: 10px;
 }
 
+.progress {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--a-muted);
+}
+
 .gallery {
   margin-top: 24px;
   padding-top: 20px;

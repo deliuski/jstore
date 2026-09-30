@@ -154,12 +154,13 @@ export async function setStock(productId: string, sizes: SizeStock[], stock: num
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024
 
-/** Uploads a product photo to Storage and returns its public URL. */
-export async function uploadProductImage(file: File): Promise<string> {
+/** Uploads a product photo to Storage, reporting progress, and returns its public URL. */
+export async function uploadProductImage(file: File | Blob, onProgress?: (note: string) => void): Promise<string> {
   if (!file.type.startsWith('image/')) throw new Error('Зөвхөн зураг оруулна уу')
   if (file.size > MAX_IMAGE_BYTES) throw new Error('Зургийн хэмжээ 5MB-аас ихгүй байх ёстой')
-  const safeName = file.name.toLowerCase().replace(/[^a-z0-9.]+/g, '-')
+  const safeName = (file instanceof File ? file.name : 'image.png').toLowerCase().replace(/[^a-z0-9.]+/g, '-')
   const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}`
+  onProgress?.('Хадгалж байна…')
   const snapshot = await uploadBytes(ref(storage, path), file, { contentType: file.type })
   return getDownloadURL(snapshot.ref)
 }

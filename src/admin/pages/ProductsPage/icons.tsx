@@ -49,3 +49,10 @@ export const UploadIcon = (props: IconProps) => (
     <path d="M4.5 15v4.5h15V15" />
   </Icon>
 )
+
+export const CameraIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M4 7.5h3l2-2.5h6l2 2.5h3a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5z" />
+    <circle cx="12" cy="13" r="3.5" />
+  </Icon>
+)

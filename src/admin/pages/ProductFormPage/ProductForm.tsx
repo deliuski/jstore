@@ -61,8 +61,9 @@ export function ProductForm({ id, product }: ProductFormProps) {
   const [saving, setSaving] = useState(false)
   const [dialog, setDialog] = useState<'delete' | 'leave' | null>(null)
   const [deleting, setDeleting] = useState(false)
-  const mainUpload = useImageUpload()
-  const galleryUpload = useImageUpload()
+  const [stripBackground, setStripBackground] = useState(false)
+  const mainUpload = useImageUpload(stripBackground)
+  const galleryUpload = useImageUpload(stripBackground)
 
   const errors = validateDraft(draft)
   const shown = submitted ? errors : NO_ERRORS
@@ -218,6 +219,8 @@ export function ProductForm({ id, product }: ProductFormProps) {
               imageError={shown.fields.image}
               mainUpload={mainUpload}
               galleryUpload={galleryUpload}
+              stripBackground={stripBackground}
+              onStripBackgroundChange={setStripBackground}
             />
 
             <SizesSection className={s.sizes} draft={draft} onChange={update} errors={shown} />
