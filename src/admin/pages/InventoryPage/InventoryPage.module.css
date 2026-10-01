@@ -89,12 +89,39 @@
 
 .sizes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
+}
+
+/* The size ("EU 42") above each stock input. */
+.sizeCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.sizeLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--a-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A narrower stepper than the kit default, so the number stays visible. */
+.sizes button {
+  width: 38px;
+}
+
+.sizes input {
+  padding: 0 4px;
 }
 
 @media (max-width: 767px) {
   .sizes {
-    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   }
 }

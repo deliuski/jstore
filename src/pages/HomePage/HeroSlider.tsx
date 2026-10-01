@@ -1,20 +1,42 @@
 import { useMemo, useRef, useState, type PointerEvent } from 'react'
 import { Link } from 'react-router'
 import { ChevronLeftIcon, ChevronRightIcon } from '../../components/icons'
-import { useCatalog } from '../../hooks/data'
-import { HERO_SLIDES, heroSlidesFromProducts, type HeroSlide } from '../../data/slides'
+import { useBanners, useCatalog } from '../../hooks/data'
+import { CATALOG_PATH } from '../../data/site'
+import type { Product } from '../../models/product'
+import type { Banner } from '../../models/settings'
+import { HERO_SLIDES } from './slidesData'
+import type { HeroSlide } from '../../data/slides'
 import { cx } from '../../lib/cx'
 import s from './HeroSlider.module.css'
 
 const SWIPE_THRESHOLD = 50
 
+/** Joins each banner with its linked product (photo/title/destination). */
+function slidesFromBanners(banners: Banner[], products: Product[]): HeroSlide[] {
+  return banners.map((banner) => {
+    const product = products.find((item) => item.id === banner.productId)
+    return {
+      id: banner.id,
+      kicker: banner.kicker,
+      title: banner.title || product?.name || 'ANZO',
+      ghost: banner.ghost || product?.mark || product?.name.split(' ')[0]?.toUpperCase() || 'ANZO',
+      image: banner.image || product?.image || null,
+      imageAlt: banner.title || product?.name || 'Баннер',
+      href: product ? `/product/${product.id}` : CATALOG_PATH,
+      ctaLabel: 'ХУДАЛДАЖ АВАХ',
+    }
+  })
+}
+
 export function HeroSlider() {
+  const banners = useBanners()
   const catalog = useCatalog()
-  // Real products once the catalog loads; the design showcase until then.
+  // Saved banners; the design showcase until the first banner exists.
   const slides = useMemo(() => {
-    const fromCatalog = catalog.data ? heroSlidesFromProducts(catalog.data) : []
-    return fromCatalog.length > 0 ? fromCatalog : HERO_SLIDES
-  }, [catalog.data])
+    const fromBanners = banners.data ? slidesFromBanners(banners.data, catalog.data ?? []) : []
+    return fromBanners.length > 0 ? fromBanners : HERO_SLIDES
+  }, [banners.data, catalog.data])
 
   return <HeroCarousel slides={slides} />
 }
@@ -58,7 +80,7 @@ function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             <span className={s.kicker}>{slide.kicker}</span>
             <h1 className={s.title}>{slide.title}</h1>
             <Link to={slide.href} className={s.cta}>
-              ХУДАЛДАЖ АВАХ
+              {slide.ctaLabel}
             </Link>
           </div>
           {slide.image ? (

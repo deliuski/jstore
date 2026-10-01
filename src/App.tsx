@@ -7,6 +7,7 @@ import { CartPage } from './pages/CartPage/CartPage'
 import { CatalogPage } from './pages/CatalogPage/CatalogPage'
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage'
 import { HomePage } from './pages/HomePage/HomePage'
+import { LegalPage } from './pages/LegalPage/LegalPage'
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage'
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage'
 import { ProductPage } from './pages/ProductPage/ProductPage'
@@ -31,12 +32,14 @@ const ProductFormPage = lazy(() =>
 const InventoryPage = lazy(() =>
   import('./admin/pages/InventoryPage/InventoryPage').then((m) => ({ default: m.InventoryPage })),
 )
+const BannersPage = lazy(() => import('./admin/pages/BannersPage/BannersPage').then((m) => ({ default: m.BannersPage })))
 const PreordersPage = lazy(() =>
   import('./admin/pages/PreordersPage/PreordersPage').then((m) => ({ default: m.PreordersPage })),
 )
 const SettingsPage = lazy(() =>
   import('./admin/pages/SettingsPage/SettingsPage').then((m) => ({ default: m.SettingsPage })),
 )
+const EmailsPage = lazy(() => import('./admin/pages/EmailsPage/EmailsPage').then((m) => ({ default: m.EmailsPage })))
 
 export function App() {
   return (
@@ -51,6 +54,9 @@ export function App() {
               <Route path="location" element={<LocationPage />} />
               <Route path="cart" element={<CartPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="terms" element={<LegalPage />} />
+              <Route path="privacy-policy" element={<LegalPage />} />
+              <Route path="shipping-returns" element={<LegalPage />} />
               <Route path="order/success" element={<OrderSuccessPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
@@ -63,8 +69,10 @@ export function App() {
               <Route path="products" element={<ProductsPage />} />
               <Route path="products/new" element={<ProductFormPage />} />
               <Route path="products/:id" element={<ProductFormPage />} />
+              <Route path="banners" element={<BannersPage />} />
               <Route path="inventory" element={<InventoryPage />} />
               <Route path="preorders" element={<PreordersPage />} />
+              <Route path="emails" element={<EmailsPage />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
           </Routes>

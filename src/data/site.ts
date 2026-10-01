@@ -11,8 +11,8 @@ export interface NavLink {
 
 /** Logo text. */
 export const BRAND = {
-  name: 'ANZO STORE',
-  tagline: 'ГУТЛИЙН ДЭЛГҮҮР',
+  name: 'JORDAN',
+  tagline: 'ГУТЛИЙН ИХ ДЭЛГҮҮР',
 }
 
 
@@ -20,6 +20,9 @@ export const CATALOG_PATH = '/products'
 export const CART_PATH = '/cart'
 export const CHECKOUT_PATH = '/checkout'
 export const LOCATION_PATH = '/location'
+export const TERMS_PATH = '/terms'
+export const PRIVACY_PATH = '/privacy-policy'
+export const SHIPPING_RETURNS_PATH = '/shipping-returns'
 export const SIZE_GUIDE_PATH = '/'
 
 export const MAIN_NAV: NavLink[] = [
@@ -47,8 +50,8 @@ export const FOOTER_GROUPS: {
     title: 'Бусад',
     links: [
       { label: 'Размерын заавар', to: SIZE_GUIDE_PATH },
-      { label: 'Үйлчилгээний нөхцөл', to: '/' },
-      { label: 'Нууцлалын бодлого', to: '/' },
+      { label: 'Үйлчилгээний нөхцөл', to: TERMS_PATH },
+      { label: 'Нууцлалын бодлого', to: PRIVACY_PATH },
       { label: 'Сайтын бүтэц', to: '/', desktopOnly: true },
     ],
   },

@@ -1,3 +1,4 @@
+import { useState, type FormEvent } from 'react'
 import { Fragment } from 'react'
 import { Link } from 'react-router'
 import { FOOTER_GROUPS, PAYMENT_METHODS, WEBSITE_CREDIT } from '../../data/site'
@@ -5,10 +6,35 @@ import { useStoreSettings } from '../../hooks/data'
 import { cx } from '../../lib/cx'
 import { FacebookIcon, InstagramIcon } from '../icons'
 import { Logo } from '../Logo/Logo'
+import { isValidEmail, saveEmailSubscriber } from '../../services/emailSubscribers'
 import s from './Footer.module.css'
 
 export function Footer() {
   const store = useStoreSettings()
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+
+  const submit = async (event: FormEvent) => {
+    event.preventDefault()
+    const trimmed = email.trim()
+    if (!isValidEmail(trimmed)) {
+      setMessage('Зөв имэйл оруулна уу')
+      return
+    }
+
+    setSubscribing(true)
+    setMessage(null)
+    try {
+      await saveEmailSubscriber(trimmed, 'site-footer', 'Сайтын доод хэсэг')
+      setEmail('')
+      setMessage('Имэйл бүртгэгдлээ. Шинэ барааны мэдэгдэл илгээнэ.')
+    } catch {
+      setMessage('Бүртгэж чадсангүй. Дахин оролдоно уу.')
+    } finally {
+      setSubscribing(false)
+    }
+  }
 
   return (
     <footer id="footer" className={s.footer}>
@@ -33,6 +59,28 @@ export function Footer() {
                 {store.hours}
               </span>
             </div>
+
+            <form className={s.subscribe} onSubmit={submit} noValidate>
+              <label className={s.subscribeLabel} htmlFor="footer-email">
+                Шинэ барааны мэдэгдэл авах
+              </label>
+              <div className={s.subscribeRow}>
+                <input
+                  id="footer-email"
+                  type="email"
+                  className={s.subscribeInput}
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <button type="submit" className={s.subscribeButton} disabled={subscribing}>
+                  {subscribing ? '...' : 'Бүртгүүлэх'}
+                </button>
+              </div>
+              <p className={s.subscribeMessage} aria-live="polite">
+                {message ?? 'Имэйлээ үлдээгээд шинэ бараа ирэхэд түрүүлж мэдээрэй.'}
+              </p>
+            </form>
           </div>
 
           {FOOTER_GROUPS.map((group) => (

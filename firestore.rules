@@ -37,6 +37,32 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    match /banners/{bannerId} {
+      // Home page banners: public read, admins manage them.
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /emailSubscribers/{subscriberId} {
+      // Visitors can subscribe with their email; admins can review and remove entries.
+      allow read, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['email', 'productId', 'productName', 'createdAt', 'updatedAt'])
+        && subscriberId == request.resource.data.email
+        && request.resource.data.email is string
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && request.resource.data.productId is string
+        && request.resource.data.productName is string;
+      allow update: if isAdmin()
+        || (
+          request.resource.data.keys().hasOnly(['email', 'productId', 'productName', 'createdAt', 'updatedAt'])
+          && subscriberId == request.resource.data.email
+          && request.resource.data.email is string
+          && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+          && request.resource.data.productId is string
+          && request.resource.data.productName is string
+        );
+    }
+
     match /counters/orders {
       allow read: if true;
       // A customer may only move the counter to the order they are creating in the same write.

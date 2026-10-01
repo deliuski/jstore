@@ -48,7 +48,7 @@ export type DraftUpdate = (change: Partial<ProductDraft> | ((draft: ProductDraft
 
 export const STATUS_HINTS: Record<ProductStatus, string> = {
   active: 'Дэлгүүрт харагдаж, захиалга авна',
-  soon: 'Дэлгүүрт «Удахгүй ирнэ» гэж харагдаж, урьдчилсан захиалга авна',
+  soon: 'Дэлгүүрт «Удахгүй ирэх» гэж харагдаж, урьдчилсан захиалга авна',
   draft: 'Зөвхөн удирдлагад харагдана',
   hidden: 'Дэлгүүрээс нуусан — зөвхөн удирдлагад харагдана',
 }

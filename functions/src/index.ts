@@ -3,6 +3,7 @@ import { defineSecret } from 'firebase-functions/params'
 import { onCall, onRequest, HttpsError } from 'firebase-functions/v2/https'
 import { initializeApp, type App } from 'firebase-admin/app'
 import { getFirestore, type Firestore } from 'firebase-admin/firestore'
+import nodemailer from 'nodemailer'
 import {
   BonumGatewayClient,
   parseWebhookEvent,
@@ -16,11 +17,26 @@ const BONUM_TERMINAL_ID = defineSecret('BONUM_TERMINAL_ID')
 const BONUM_MERCHANT_CHECKSUM_KEY = defineSecret('BONUM_MERCHANT_CHECKSUM_KEY')
 /** The storefront URL (Vercel) — where a paying browser is sent back to. */
 const SITE_URL_SECRET = defineSecret('SITE_URL')
+const SMTP_HOST = defineSecret('SMTP_HOST')
+const SMTP_PORT = defineSecret('SMTP_PORT')
+const SMTP_USER = defineSecret('SMTP_USER')
+const SMTP_PASS = defineSecret('SMTP_PASS')
+const SMTP_FROM = defineSecret('SMTP_FROM')
 
 setGlobalOptions({
   region: 'us-central1',
   maxInstances: 10,
-  secrets: [BONUM_APP_SECRET, BONUM_TERMINAL_ID, BONUM_MERCHANT_CHECKSUM_KEY, SITE_URL_SECRET],
+  secrets: [
+    BONUM_APP_SECRET,
+    BONUM_TERMINAL_ID,
+    BONUM_MERCHANT_CHECKSUM_KEY,
+    SITE_URL_SECRET,
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USER,
+    SMTP_PASS,
+    SMTP_FROM,
+  ],
 })
 
 // Lazy Admin SDK init: `firebase deploy` loads this module to discover the
@@ -71,6 +87,42 @@ function bonumClient(): BonumGatewayClient {
 
 /** The storefront URL — where the paying browser is sent back (Vercel domain). */
 const siteUrl = () => process.env.SITE_URL ?? 'https://jstore-henna.vercel.app'
+
+function isAdmin(uid: string | undefined): Promise<boolean> {
+  if (!uid) return Promise.resolve(false)
+  return db().doc(`admins/${uid}`).get().then((snap) => snap.exists)
+}
+
+function smtpTransport() {
+  const host = (process.env.SMTP_HOST ?? '').trim()
+  const port = Number(process.env.SMTP_PORT ?? '587')
+  const user = (process.env.SMTP_USER ?? '').trim()
+  const pass = (process.env.SMTP_PASS ?? '').trim()
+  const from = (process.env.SMTP_FROM ?? '').trim()
+
+  if (!host || !port || !user || !pass || !from) {
+    throw new HttpsError('failed-precondition', 'Имэйл илгээх SMTP тохиргоо бүрдээгүй байна')
+  }
+
+  return {
+    from,
+    transporter: nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465,
+      auth: { user, pass },
+    }),
+  }
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
 
 /**
  * The public URL of the `bonumWebhook` function — passed to Bonum as the
@@ -139,6 +191,59 @@ export const createBonumInvoice = onCall(async (request) => {
   })
 
   return { invoiceId: invoice.invoiceId, payUrl: invoice.followUpLink }
+})
+
+export const sendSubscriberAnnouncement = onCall(async (request) => {
+  const uid = request.auth?.uid
+  if (!(await isAdmin(uid))) {
+    throw new HttpsError('permission-denied', 'Админ эрх шаардлагатай')
+  }
+
+  const subject = String(request.data?.subject ?? '').trim()
+  const body = String(request.data?.body ?? '').trim()
+  if (!subject || !body) {
+    throw new HttpsError('invalid-argument', 'Гарчиг болон агуулга шаардлагатай')
+  }
+
+  const snapshot = await db().collection('emailSubscribers').get()
+  const recipients = snapshot.docs.map((docSnap) => String(docSnap.get('email') ?? '').trim()).filter(Boolean)
+  if (recipients.length === 0) {
+    throw new HttpsError('failed-precondition', 'Бүртгэлтэй имэйл олдсонгүй')
+  }
+
+  const { transporter, from } = smtpTransport()
+  await transporter.sendMail({
+    from,
+    bcc: recipients,
+    subject,
+    text: body,
+    html: `<div style="font-family:Arial,sans-serif;line-height:1.6;white-space:pre-wrap">${escapeHtml(body).replaceAll('\n', '<br>')}</div>`,
+  })
+
+  return { recipientCount: recipients.length }
+})
+
+export const subscribeEmailSubscriber = onCall(async (request) => {
+  const email = String(request.data?.email ?? '').trim().toLowerCase()
+  const productId = String(request.data?.productId ?? '').trim()
+  const productName = String(request.data?.productName ?? '').trim()
+
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    throw new HttpsError('invalid-argument', 'Зөв имэйл оруулна уу')
+  }
+  if (!productId || !productName) {
+    throw new HttpsError('invalid-argument', 'Бүртгэлийн мэдээлэл дутуу байна')
+  }
+
+  await db().doc(`emailSubscribers/${email}`).set({
+    email,
+    productId,
+    productName,
+    createdAt: FieldValueServerTimestamp(),
+    updatedAt: FieldValueServerTimestamp(),
+  }, { merge: true })
+
+  return { ok: true }
 })
 
 /** serverTimestamp, imported lazily alongside the Admin SDK. */

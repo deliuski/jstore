@@ -103,6 +103,81 @@
   gap: 10px;
 }
 
+.notify {
+  padding: 22px 22px 20px;
+  border: 1px solid var(--c-line);
+  background: linear-gradient(180deg, rgba(245, 245, 243, 0.82), rgba(255, 255, 255, 0.96));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notifyHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notifyTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.notifyLead {
+  color: var(--c-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.notifyForm {
+  display: flex;
+  gap: 10px;
+}
+
+.notifyInput {
+  flex: 1;
+  min-width: 0;
+  height: 54px;
+  padding: 0 16px;
+  border: 1px solid var(--c-line);
+  background: var(--c-white);
+  font-size: 15px;
+}
+
+.notifyInput::placeholder {
+  color: var(--c-muted);
+}
+
+.notifyInput:focus {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 2px;
+}
+
+.notifyButton {
+  height: 54px;
+  padding: 0 18px;
+  background: var(--c-ink);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.notifyButton:disabled {
+  opacity: 0.7;
+}
+
+.notifyNote {
+  color: var(--c-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .addToCart {
   width: 100%;
   height: 62px;
@@ -271,6 +346,19 @@
   .addToCart {
     height: 56px;
     font-size: 19px;
+  }
+
+  .notify {
+    padding: 18px;
+  }
+
+  .notifyForm {
+    flex-direction: column;
+  }
+
+  .notifyButton,
+  .notifyInput {
+    width: 100%;
   }
 
   .messenger {

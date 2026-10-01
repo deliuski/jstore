@@ -167,31 +167,40 @@ function ProductStockRow({ product }: { product: Product }) {
 
       {oneSize ? (
         <div className={s.sizes}>
-          <NumberField
-            label="Нөөц (ширхэг)"
-            hideLabel
-            value={draft.stock}
-            min={0}
-            step={1}
-            stepper
-            onChange={setOneSizeStock}
-            aria-label={`${product.name}: нөөц`}
-          />
+          <div className={s.sizeCell}>
+            <span className={s.sizeLabel} aria-hidden="true">
+              Нөөц
+            </span>
+            <NumberField
+              label="Нөөц (ширхэг)"
+              hideLabel
+              value={draft.stock}
+              min={0}
+              step={1}
+              stepper
+              onChange={setOneSizeStock}
+              aria-label={`${product.name}: нөөц`}
+            />
+          </div>
         </div>
       ) : (
         <div className={s.sizes}>
           {draft.sizes.map((size) => (
-            <NumberField
-              key={size.label}
-              label={`EU ${size.label}`}
-              hideLabel
-              value={size.stock}
-              min={0}
-              step={1}
-              stepper
-              onChange={(value) => setSizeStock(size.label, value)}
-              aria-label={`${product.name}: EU ${size.label} нөөц`}
-            />
+            <div key={size.label} className={s.sizeCell}>
+              <span className={s.sizeLabel} aria-hidden="true">
+                EU {size.label}
+              </span>
+              <NumberField
+                label={`EU ${size.label}`}
+                hideLabel
+                value={size.stock}
+                min={0}
+                step={1}
+                stepper
+                onChange={(value) => setSizeStock(size.label, value)}
+                aria-label={`${product.name}: EU ${size.label} нөөц`}
+              />
+            </div>
           ))}
         </div>
       )}

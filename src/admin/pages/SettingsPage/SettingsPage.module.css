@@ -6,6 +6,10 @@
   gap: 16px;
 }
 
+.hero {
+  grid-column: 1;
+}
+
 @media (max-width: 1279px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);

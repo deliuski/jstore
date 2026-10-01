@@ -55,6 +55,14 @@ export const LayersIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const ImageStackIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <rect x="7.5" y="3.5" width="13" height="10" rx="1.5" />
+    <path d="M4 7.5v10A3 3 0 0 0 7 20.5h10" />
+    <path d="M7.5 13.5l3-3 4 4 2.5-2.5 3.5 3.5" />
+  </Icon>
+)
+
 export const HourglassIcon = (props: IconProps) => (
   <Icon {...props}>
     <path d="M6 2.5h12M6 21.5h12" />

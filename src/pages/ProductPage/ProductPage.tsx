@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { BagIcon, CheckIcon } from '../../components/icons'
 import { PageError, PageLoader } from '../../components/PageStatus/PageStatus'
@@ -8,6 +8,7 @@ import { useShop } from '../../context/shop'
 import { BRAND, CART_PATH, CATALOG_PATH, CHECKOUT_PATH } from '../../data/site'
 import { useCatalog } from '../../hooks/data'
 import { formatPrice } from '../../lib/format'
+import { isValidEmail, saveEmailSubscriber } from '../../services/emailSubscribers'
 import {
   CATEGORY_LABELS,
   availableSizes,
@@ -59,6 +60,9 @@ function ProductDetails({ product, related }: { product: Product; related: Produ
   const { addToCart } = useShop()
   const [size, setSize] = useState(() => initialSize(product, searchParams.get('size')))
   const [added, setAdded] = useState(false)
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeMessage, setSubscribeMessage] = useState<string | null>(null)
 
   const tag = getProductTag(product)
   const preorder = product.status === 'soon'
@@ -77,6 +81,27 @@ function ProductDetails({ product, related }: { product: Product; related: Produ
     if (hasSizes(product) && !size) return
     addToCart(product.id, hasSizes(product) ? size : null)
     setAdded(true)
+  }
+
+  const submitEmail = async (event: FormEvent) => {
+    event.preventDefault()
+    const trimmed = email.trim()
+    if (!isValidEmail(trimmed)) {
+      setSubscribeMessage('Зөв имэйл оруулна уу')
+      return
+    }
+
+    setSubscribing(true)
+    setSubscribeMessage(null)
+    try {
+      await saveEmailSubscriber(trimmed, product.id, product.name)
+      setEmail('')
+      setSubscribeMessage('Имэйл хадгалагдлаа. Шинэ барааны мэдэгдэл илгээнэ.')
+    } catch {
+      setSubscribeMessage('Имэйл хадгалж чадсангүй. Дахин оролдоно уу.')
+    } finally {
+      setSubscribing(false)
+    }
   }
 
   return (
@@ -141,6 +166,31 @@ function ProductDetails({ product, related }: { product: Product; related: Produ
               ЗАХИАЛАХ
             </button>
           </div>
+
+          <section className={s.notify} aria-labelledby="notify-title">
+            <div className={s.notifyHeader}>
+              <h2 id="notify-title" className={s.notifyTitle}>
+                Шинэ бараа ирэхэд эхнийхээр мэдээрэй
+              </h2>
+              <p className={s.notifyLead}>Имэйлээ үлдээгээрэй. Шинэ бараа, хямдрал, онцлох мэдээг илгээнэ.</p>
+            </div>
+
+            <form className={s.notifyForm} onSubmit={submitEmail} noValidate>
+              <input
+                type="email"
+                className={s.notifyInput}
+                placeholder="name@example.com"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
+              <button type="submit" className={s.notifyButton} disabled={subscribing}>
+                {subscribing ? 'Хадгалж байна…' : 'Хадгалах'}
+              </button>
+            </form>
+            <p className={s.notifyNote} aria-live="polite">
+              {subscribeMessage ?? 'Имэйлийг зөвхөн мэдэгдэл илгээхэд ашиглана.'}
+            </p>
+          </section>
 
           {added && (
             <div className={s.added} role="status">

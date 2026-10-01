@@ -1,11 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bonumWebhook = exports.createBonumInvoice = void 0;
+exports.bonumWebhook = exports.subscribeEmailSubscriber = exports.sendSubscriberAnnouncement = exports.createBonumInvoice = void 0;
 const firebase_functions_1 = require("firebase-functions");
 const params_1 = require("firebase-functions/params");
 const https_1 = require("firebase-functions/v2/https");
 const app_1 = require("firebase-admin/app");
 const firestore_1 = require("firebase-admin/firestore");
+const nodemailer_1 = __importDefault(require("nodemailer"));
 const bonum_1 = require("@mongolian-payment/bonum");
 // Declaring the secrets here makes them available as process.env.* inside the
 // functions and pins them to every function in this codebase (v2 requirement).
@@ -14,10 +18,25 @@ const BONUM_TERMINAL_ID = (0, params_1.defineSecret)('BONUM_TERMINAL_ID');
 const BONUM_MERCHANT_CHECKSUM_KEY = (0, params_1.defineSecret)('BONUM_MERCHANT_CHECKSUM_KEY');
 /** The storefront URL (Vercel) — where a paying browser is sent back to. */
 const SITE_URL_SECRET = (0, params_1.defineSecret)('SITE_URL');
+const SMTP_HOST = (0, params_1.defineSecret)('SMTP_HOST');
+const SMTP_PORT = (0, params_1.defineSecret)('SMTP_PORT');
+const SMTP_USER = (0, params_1.defineSecret)('SMTP_USER');
+const SMTP_PASS = (0, params_1.defineSecret)('SMTP_PASS');
+const SMTP_FROM = (0, params_1.defineSecret)('SMTP_FROM');
 (0, firebase_functions_1.setGlobalOptions)({
     region: 'us-central1',
     maxInstances: 10,
-    secrets: [BONUM_APP_SECRET, BONUM_TERMINAL_ID, BONUM_MERCHANT_CHECKSUM_KEY, SITE_URL_SECRET],
+    secrets: [
+        BONUM_APP_SECRET,
+        BONUM_TERMINAL_ID,
+        BONUM_MERCHANT_CHECKSUM_KEY,
+        SITE_URL_SECRET,
+        SMTP_HOST,
+        SMTP_PORT,
+        SMTP_USER,
+        SMTP_PASS,
+        SMTP_FROM,
+    ],
 });
 // Lazy Admin SDK init: `firebase deploy` loads this module to discover the
 // functions, and initializing there (no credentials in that sandbox) hangs
@@ -61,6 +80,38 @@ function bonumClient() {
 }
 /** The storefront URL — where the paying browser is sent back (Vercel domain). */
 const siteUrl = () => process.env.SITE_URL ?? 'https://jstore-henna.vercel.app';
+function isAdmin(uid) {
+    if (!uid)
+        return Promise.resolve(false);
+    return db().doc(`admins/${uid}`).get().then((snap) => snap.exists);
+}
+function smtpTransport() {
+    const host = (process.env.SMTP_HOST ?? '').trim();
+    const port = Number(process.env.SMTP_PORT ?? '587');
+    const user = (process.env.SMTP_USER ?? '').trim();
+    const pass = (process.env.SMTP_PASS ?? '').trim();
+    const from = (process.env.SMTP_FROM ?? '').trim();
+    if (!host || !port || !user || !pass || !from) {
+        throw new https_1.HttpsError('failed-precondition', 'Имэйл илгээх SMTP тохиргоо бүрдээгүй байна');
+    }
+    return {
+        from,
+        transporter: nodemailer_1.default.createTransport({
+            host,
+            port,
+            secure: port === 465,
+            auth: { user, pass },
+        }),
+    };
+}
+function escapeHtml(value) {
+    return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
 /**
  * The public URL of the `bonumWebhook` function — passed to Bonum as the
  * invoice `callback` and registered in Bonum's merchant portal. It is
@@ -117,6 +168,50 @@ exports.createBonumInvoice = (0, https_1.onCall)(async (request) => {
         updatedAt: FieldValueServerTimestamp(),
     });
     return { invoiceId: invoice.invoiceId, payUrl: invoice.followUpLink };
+});
+exports.sendSubscriberAnnouncement = (0, https_1.onCall)(async (request) => {
+    const uid = request.auth?.uid;
+    if (!(await isAdmin(uid))) {
+        throw new https_1.HttpsError('permission-denied', 'Админ эрх шаардлагатай');
+    }
+    const subject = String(request.data?.subject ?? '').trim();
+    const body = String(request.data?.body ?? '').trim();
+    if (!subject || !body) {
+        throw new https_1.HttpsError('invalid-argument', 'Гарчиг болон агуулга шаардлагатай');
+    }
+    const snapshot = await db().collection('emailSubscribers').get();
+    const recipients = snapshot.docs.map((docSnap) => String(docSnap.get('email') ?? '').trim()).filter(Boolean);
+    if (recipients.length === 0) {
+        throw new https_1.HttpsError('failed-precondition', 'Бүртгэлтэй имэйл олдсонгүй');
+    }
+    const { transporter, from } = smtpTransport();
+    await transporter.sendMail({
+        from,
+        bcc: recipients,
+        subject,
+        text: body,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;white-space:pre-wrap">${escapeHtml(body).replaceAll('\n', '<br>')}</div>`,
+    });
+    return { recipientCount: recipients.length };
+});
+exports.subscribeEmailSubscriber = (0, https_1.onCall)(async (request) => {
+    const email = String(request.data?.email ?? '').trim().toLowerCase();
+    const productId = String(request.data?.productId ?? '').trim();
+    const productName = String(request.data?.productName ?? '').trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        throw new https_1.HttpsError('invalid-argument', 'Зөв имэйл оруулна уу');
+    }
+    if (!productId || !productName) {
+        throw new https_1.HttpsError('invalid-argument', 'Бүртгэлийн мэдээлэл дутуу байна');
+    }
+    await db().doc(`emailSubscribers/${email}`).set({
+        email,
+        productId,
+        productName,
+        createdAt: FieldValueServerTimestamp(),
+        updatedAt: FieldValueServerTimestamp(),
+    }, { merge: true });
+    return { ok: true };
 });
 /** serverTimestamp, imported lazily alongside the Admin SDK. */
 function FieldValueServerTimestamp() {
